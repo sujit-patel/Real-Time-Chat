@@ -2,7 +2,7 @@ import React from "react";
 import Chat from "./Chat";
 import User from "./User";
 import { IoSend } from "react-icons/io5";
-
+import userImg from "../assets/user profile.png";
 function Right() {
   return (
     <>
@@ -11,7 +11,7 @@ function Right() {
           <div className="flex gap-5 bg-slate-700 hover:bg-slate-600 p-2 rounded-md cursor-pointer ">
             <div className="avatar online">
               <div className="w-14 rounded-full">
-                <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+                <img src={userImg} className="scale-150"/>
               </div>
             </div>
             <div>

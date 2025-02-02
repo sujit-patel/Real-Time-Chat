@@ -1,4 +1,5 @@
 import React from "react";
+import userImg from "../assets/user profile.png";
 
 function Chat() {
   return (
@@ -8,7 +9,8 @@ function Chat() {
           <div className="w-10 rounded-full">
             <img
               alt="Tailwind CSS chat bubble component"
-              src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+              src={userImg}
+              className="scale-150"
             />
           </div>
         </div>
@@ -24,7 +26,8 @@ function Chat() {
           <div className="w-10 rounded-full">
             <img
               alt="Tailwind CSS chat bubble component"
-              src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+              src={userImg}
+              className="scale-150"
             />
           </div>
         </div>
