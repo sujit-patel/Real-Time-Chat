@@ -1,0 +1,24 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.4.7",
+    "express": "^4.18.2",
+    "mongoose": "^8.9.6",
+    "nodemon": "^3.1.9"
+  },
+  "description": "Real Time Chat",
+  "keywords": [
+    "mernstack",
+    "project"
+  ],
+  "author": "Sujit Patel",
+  "license": "ISC"
+}
