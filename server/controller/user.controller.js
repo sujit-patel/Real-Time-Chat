@@ -1,6 +1,8 @@
 import User from "../models/user.model.js";
 import bcrypt from "bcryptjs"
+import tokenAndCookie from "../jwt/tokenGenerate.js"
 
+// signup part 
 export const signup = async (req, res) => {
     const { fullname, email, password, confirmpassword } = req.body;
     try {
@@ -21,9 +23,46 @@ export const signup = async (req, res) => {
             }
         );
         await newUser.save();
-        res.status(201).json({ message: "User registered successfully" });
+        if (newUser) {
+            tokenAndCookie(newUser._id, res);
+            res.status(201).json({
+                message: "User registered successfully", newUser: {
+                    _id: newUser._id,
+                    fullname: newUser.fullname,
+                    email: newUser.email,
+                },
+            });
+        }
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: "Server Error" });
+        res.status(500).json({ message: "Server Error ", error });
     }
 };
+
+// login part
+export const login = async (req, res) => {
+    const { email, password } = req.body;
+    try {
+        const user = await User.findOne({ email });
+        if (user) {
+            const passwordMatch = await bcrypt.compare(password, user.password);
+            if (passwordMatch) {
+                tokenAndCookie(user._id, res);
+                res.status(201).json({
+                    message: "Login Successfuly...", user: {
+                        _id: user._id,
+                        fullname: user.fullname,
+                        email: user.email
+                    },
+                });
+            } else {
+                res.status(400).json({ message: "Password Is Invalid..." });
+            }
+        } else {
+            res.status(400).json({ message: "Email is Note Registered plase Signup Plase..." });
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Server Error" });
+    }
+}
