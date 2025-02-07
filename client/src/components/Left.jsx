@@ -3,7 +3,7 @@ import User from "./User";
 function left() {
   return (
     <>
-      <div className="w-1/4 space-y-5 h-screen flex flex-col">
+      <div className="space-y-5 border w-1/4 h-screen px-3 py-3 flex flex-col border-slate-400 rounded-md">
         <div>
           <h1 className="text-4xl font-bold text-center pb-3">Chat</h1>
           <label className="input input-bordered flex items-center gap-2">
@@ -24,6 +24,32 @@ function left() {
         </div>
         <hr />
         <div className="space-y-2 overflow-y-auto scrollbar-hide flex-1">
+          <User />
+          <User />
+          <User />
+          <User />
+          <User />
+          <User />
+          <User />
+          <User />
+          <User />
+          <User />
+          <User />
+          <User />
+          <User />
+          <User />
+          <User />
+          <User />
+          <User />
+          <User />
+          <User />
+          <User />
+          <User />
+          <User />
+          <User />
+          <User />
+          <User />
+          <User />
           <User />
           <User />
           <User />
