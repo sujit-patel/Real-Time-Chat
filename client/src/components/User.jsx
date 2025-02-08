@@ -11,7 +11,7 @@ function User() {
         </div>
         <div>
           <h1 className="text-xl">Sujit Patel</h1>
-          <p className="text-sm">user@gmail.com</p>
+          <p className="text-sm ">user@gmail.com</p>
         </div>
       </div>
     </>

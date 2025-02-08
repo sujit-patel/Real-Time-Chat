@@ -15,26 +15,23 @@ function Signup() {
   const password = watch("password");
 
   const onSubmit = async (data) => {
-    const newUser = {
+    const userInfo = {
       fullname: data.fullname,
       email: data.email,
       password: data.password,
       confirmpassword: data.confirmpassword,
     };
     await axios
-      .post("http://localhost:5000/user/signup", newUser)
+      .post("http://localhost:5000/user/signup", userInfo)
       .then((response) => {
-        console.log(response.data);
         if (response.data) {
           toast.success("Signup successful");
-          // console.log("Signup successful");
         }
         localStorage.setItem("messanger", JSON.stringify(response.data));
       })
       .catch((error) => {
         if (error.response) {
-          // console.log(error.response.data.message);
-          toast.error(error.response.data.message);
+          toast.error("Error : " + error.response.data.message);
         }
       });
   };

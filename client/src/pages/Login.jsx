@@ -1,8 +1,9 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
-import Navbar from "../components/Navbar.jsx"
-
+import { Link, redirect } from "react-router-dom";
+import Navbar from "../components/Navbar.jsx";
+import toast, { Toaster } from "react-hot-toast";
+import axios from "axios";
 function Login() {
   const {
     register,
@@ -10,12 +11,29 @@ function Login() {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    const userInfo = {
+      email: data.email,
+      password: data.password,
+    };
+
+    await axios
+      .post("http://localhost:5000/user/login", userInfo)
+      .then((response) => {
+        toast.success("Login Successful...");
+        localStorage.setItem("messanger", JSON.stringify(response.data));
+        window.location.reload();
+      })
+      .catch((error) => {
+        if (error.response) {
+          toast.error(error.response.data.message);
+        }
+      });
   };
 
   return (
     <div className="flex items-center gap-5 justify-center h-screen">
+      <Toaster />
       <div>
         <Navbar></Navbar>
       </div>

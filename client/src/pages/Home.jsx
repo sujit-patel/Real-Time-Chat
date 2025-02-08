@@ -1,7 +1,6 @@
 import React from "react";
 import Right from "../components/Right";
 import Left from "../components/Left.jsx";
-import Logout from "../components/Logout.jsx";
 import Navbar from "../components/Navbar.jsx";
 function Home() {
   return (
