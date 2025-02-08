@@ -5,11 +5,11 @@ import tokenAndCookie from "../jwt/tokenGenerate.js"
 // signup part 
 export const signup = async (req, res) => {
     const { fullname, email, password, confirmpassword } = req.body;
+    const userExists = await User.findOne({ email });
     try {
         if (password !== confirmpassword) {
             return res.status(400).json({ message: "Passwords do not match!" });
         }
-        const userExists = await User.findOne({ email });
         if (userExists) {
             return res.status(400).json({ message: "Email already exists" });
         }
@@ -18,8 +18,8 @@ export const signup = async (req, res) => {
             {
                 fullname,
                 email,
-                password: hashPassword,
-                confirmpassword
+                password: hashPassword
+                // confirmpassword
             }
         );
         await newUser.save();
