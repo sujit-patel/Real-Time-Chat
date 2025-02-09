@@ -76,3 +76,12 @@ export const logout = async (req, res) => {
         res.status(500).json({ message: "Server Error", error });
     }
 }
+
+export const allUsers = async (req, res) => {
+    try {
+        const filteredUsers = await User.find().select("-password");
+        res.status(201).json(filteredUsers);
+    } catch (error) {
+        console.log("Error allUsers : " + error)
+    }
+}
