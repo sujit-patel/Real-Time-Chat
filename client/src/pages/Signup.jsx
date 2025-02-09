@@ -4,8 +4,12 @@ import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar.jsx";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
+import { useAuth } from "../context/AuthProvider.jsx";
+// import { useAuth } from "../context/AuthProvider.jsx";
 
 function Signup() {
+  const [authUser, setAuthUser] = useAuth;
+  console.log(authUser);
   const {
     register,
     handleSubmit,
@@ -28,6 +32,7 @@ function Signup() {
           toast.success("Signup successful");
         }
         localStorage.setItem("messanger", JSON.stringify(response.data));
+        setAuthUser(response.data);
       })
       .catch((error) => {
         if (error.response) {
