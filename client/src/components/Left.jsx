@@ -1,6 +1,10 @@
 import React from "react";
 import User from "./User";
+import useGetAllUsers from "../context/getAllUsers";
+
 function left() {
+  const [allUsers] = useGetAllUsers();
+  console.log(allUsers);
   return (
     <>
       <div className="space-y-5 border w-1/4 h-screen px-3 py-3 flex flex-col border-slate-400 rounded-md">
@@ -24,36 +28,12 @@ function left() {
         </div>
         <hr />
         <div className="space-y-2 overflow-y-auto scrollbar-hide flex-1">
-          <User />
-          <User />
-          <User />
-          <User />
-          <User />
-          <User />
-          <User />
-          <User />
-          <User />
-          <User />
-          <User />
-          <User />
-          <User />
-          <User />
-          <User />
-          <User />
-          <User />
-          <User />
-          <User />
-          <User />
-          <User />
-          <User />
-          <User />
-          <User />
-          <User />
-          <User />
-          <User />
-          <User />
-          <User />
-          <User />
+          {allUsers.length > 0 ? 
+          (allUsers.map((user,index)=>
+            <User key={index} user={user} />
+          ))
+          : (<p className="text-white">Users Not Found</p>
+         ) }
         </div>
       </div>
     </>

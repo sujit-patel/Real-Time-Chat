@@ -14,7 +14,7 @@ function Navbar() {
       if (!token) {
         toast.error("Already Logout User...");
       } else {
-        const res = await axios.post("http://localhost:5000/user/logout");
+        const res = await axios.post("/api/user/logout");
         localStorage.removeItem("messanger");
         toast.success("Logout Successful...");
         // window.location.reload();
@@ -28,19 +28,16 @@ function Navbar() {
     <>
       <div className="flex flex-col justify-center px-2 gap-5">
         <Toaster />
-        <Link to="/" className="scale-150 hover:text-slate-200">
+        <Link to="/" className="scale-150 hover:text-slate-200" title="Home">
           <IoHomeSharp />
         </Link>
-        <Link to="/signup" className="scale-150 hover:text-slate-200">
+        <Link to="/signup" className="scale-150 hover:text-slate-200" title="Signup" >
           <FaUserPlus />
         </Link>
-        <Link to="/login" className="scale-150 hover:text-slate-200">
+        <Link to="/login" className="scale-150 hover:text-slate-200" title="Login">
           <RiLoginCircleFill />
         </Link>
-        <button
-          className="scale-150 hover:text-slate-200"
-          onClick={handleLogout}
-        >
+        <button className="scale-150 hover:text-slate-200" title="Logout" onClick={handleLogout}>
           <RiLogoutCircleFill />
         </button>
       </div>

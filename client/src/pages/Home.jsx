@@ -6,7 +6,7 @@ function Home() {
   return (
     <>
       <div className="flex h-screen gap-3 mx-2">
-        <Navbar></Navbar>
+        <Navbar />
         <Left />
         <Right />
       </div>

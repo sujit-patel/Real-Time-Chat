@@ -18,7 +18,7 @@ function Login() {
     };
 
     await axios
-      .post("http://localhost:5000/user/login", userInfo)
+      .post("/api/user/login", userInfo)
       .then((response) => {
         toast.success("Login Successful...");
         localStorage.setItem("messanger", JSON.stringify(response.data));

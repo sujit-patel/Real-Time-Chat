@@ -22,7 +22,7 @@ function Signup() {
       confirmpassword: data.confirmpassword,
     };
     await axios
-      .post("http://localhost:5000/user/signup", userInfo)
+      .post("/api/user/signup", userInfo)
       .then((response) => {
         if (response.data) {
           toast.success("Signup successful");

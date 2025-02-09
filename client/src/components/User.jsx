@@ -1,6 +1,6 @@
 import React from "react";
 import userImg from "../assets/user profile.png"
-function User() {
+function User({user}) {
   return (
     <>
       <div className="flex gap-5 bg-slate-700 hover:bg-slate-600 p-2 rounded-md cursor-pointer ">
@@ -10,8 +10,8 @@ function User() {
           </div>
         </div>
         <div>
-          <h1 className="text-xl">Sujit Patel</h1>
-          <p className="text-sm ">user@gmail.com</p>
+          <h1 className="text-xl">{user.fullname}</h1>
+          <p className="text-sm ">{user.email}</p>
         </div>
       </div>
     </>
