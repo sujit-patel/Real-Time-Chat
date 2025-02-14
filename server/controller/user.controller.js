@@ -1,32 +1,28 @@
 import User from "../models/user.model.js";
-import bcrypt from "bcryptjs"
-import tokenAndCookie from "../jwt/tokenGenerate.js"
+import bcrypt from "bcryptjs";
+import createTokenAndCookie from "../jwt/tokenGenerate.js";
 
-// signup part 
+// User Signup
 export const signup = async (req, res) => {
-    const { fullname, email, password, confirmpassword } = req.body;
-    const userExists = await User.findOne({ email });
     try {
+        const { fullname, email, password, confirmpassword } = req.body;
+
         if (password !== confirmpassword) {
             return res.status(400).json({ message: "Passwords do not match!" });
         }
+        const userExists = await User.findOne({ email });
         if (userExists) {
             return res.status(400).json({ message: "Email already exists" });
         }
-        const hashPassword = await bcrypt.hash(password, 10)
-        const newUser = new User(
-            {
-                fullname,
-                email,
-                password: hashPassword
-                // confirmpassword
-            }
-        );
+        const hashPassword = await bcrypt.hash(password, 10);
+        const newUser = new User({ fullname, email, password: hashPassword });
         await newUser.save();
+
         if (newUser) {
-            tokenAndCookie(newUser._id, res);
-            res.status(201).json({
-                message: "User registered successfully", newUser: {
+            createTokenAndCookie(newUser._id, res);
+            return res.status(201).json({
+                message: "User registered successfully",
+                user: {
                     _id: newUser._id,
                     fullname: newUser.fullname,
                     email: newUser.email,
@@ -34,56 +30,60 @@ export const signup = async (req, res) => {
             });
         }
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: "Server Error ", error });
+        console.error("Signup Error:", error);
+        res.status(500).json({ message: "Server Error", error });
     }
 };
 
-// login part
+// User Login
 export const login = async (req, res) => {
-    const { email, password } = req.body;
     try {
+        const { email, password } = req.body;
         const user = await User.findOne({ email });
         if (user) {
             const passwordMatch = await bcrypt.compare(password, user.password);
             if (passwordMatch) {
-                tokenAndCookie(user._id, res);
-                res.status(201).json({
-                    message: "Login Successfuly...", user: {
+                createTokenAndCookie(user._id, res);
+                return res.status(201).json({
+                    message: "Login successful",
+                    user: {
                         _id: user._id,
                         fullname: user.fullname,
-                        email: user.email
+                        email: user.email,
                     },
                 });
             } else {
-                res.status(400).json({ message: "Password Is Invalid..." });
+                return res.status(400).json({ message: "Invalid password." });
             }
         } else {
-            res.status(400).json({ message: "Email is Note Registered plase Signup Plase..." });
+            return res.status(400).json({ message: "Email is not registered. Please sign up." });
         }
     } catch (error) {
-        console.log(error);
+        console.error("Login Error:", error);
         res.status(500).json({ message: "Server Error" });
     }
-}
+};
 
+// User Logout
 export const logout = async (req, res) => {
     try {
         res.clearCookie("jwt");
-        res.status(200).json({ message: "User Logout Successfully..." });
+        return res.status(200).json({ message: "User logged out successfully." });
     } catch (error) {
-        console.log(error);
+        console.error("Logout Error:", error);
         res.status(500).json({ message: "Server Error", error });
     }
-}
+};
 
+// All Users
 export const allUsers = async (req, res) => {
     try {
-        const loggedInUser = req.User._id;
-        const filteredUsers = await User.find({ _id: { $ne: loggedInUser }, }).select("-password");
-        res.status(201).json(filteredUsers);
+        // const loggedInUser = req.user._id;
+        // const users = await User.find({ _id: { $ne: loggedInUser } }).select("-password");
+        const users = await User.find().select("-password"); 
+        return res.status(200).json(users);
     } catch (error) {
-        console.log("Error allUsers : " + error)
+        console.error("Error fetching users:", error);
         res.status(500).json({ message: "Server Error" });
     }
-}
+};

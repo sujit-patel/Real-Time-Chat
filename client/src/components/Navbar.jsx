@@ -5,7 +5,7 @@ import { FaUserPlus } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import { IoHomeSharp } from "react-icons/io5";
 import axios from "axios";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 
 function Navbar() {
   const handleLogout = async () => {
@@ -27,7 +27,6 @@ function Navbar() {
   return (
     <>
       <div className="flex flex-col justify-center px-2 gap-5">
-        <Toaster />
         <Link to="/" className="scale-150 hover:text-slate-200" title="Home">
           <IoHomeSharp />
         </Link>

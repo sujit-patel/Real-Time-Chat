@@ -3,13 +3,12 @@ import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar.jsx";
 import axios from "axios";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { useAuth } from "../context/AuthProvider.jsx";
-// import { useAuth } from "../context/AuthProvider.jsx";
 
 function Signup() {
-  const [authUser, setAuthUser] = useAuth;
-  console.log(authUser);
+  const [authUser, setAuthUser] = useAuth();
+  // console.log(authUser);
   const {
     register,
     handleSubmit,
@@ -43,7 +42,6 @@ function Signup() {
 
   return (
     <div className="flex items-center gap-5 justify-center h-screen">
-      <Toaster />
       <div>
         <Navbar></Navbar>
       </div>

@@ -2,7 +2,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { Link, redirect } from "react-router-dom";
 import Navbar from "../components/Navbar.jsx";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import axios from "axios";
 function Login() {
   const {
@@ -20,7 +20,9 @@ function Login() {
     await axios
       .post("/api/user/login", userInfo)
       .then((response) => {
-        toast.success("Login Successful...");
+        if (response.data) {
+          toast.success("Login Successful...");
+        }
         localStorage.setItem("messanger", JSON.stringify(response.data));
         window.location.reload();
       })
@@ -33,7 +35,6 @@ function Login() {
 
   return (
     <div className="flex items-center gap-5 justify-center h-screen">
-      <Toaster />
       <div>
         <Navbar></Navbar>
       </div>
@@ -66,8 +67,8 @@ function Login() {
             {...register("password", {
               required: "Password is required",
               minLength: {
-                value: 6,
-                message: "Password must be at least 6 characters",
+                value: 5,
+                message: "Password must be at least 5 characters",
               },
             })}
           />
