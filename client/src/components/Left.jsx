@@ -1,24 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+// import React, { useEffect, useState } from "react";
 import User from "./User";
-import axios from "axios";
+// import axios from "axios";
 
 function Left() {
-  const [allUsers, setAllUsers] = useState([]);
+  // const [allUsers, setAllUsers] = useState([]);
 
-  useEffect(() => {
-    const getUsers = async () => {
-      try {
-        const response = await axios.get("/api/user/allusers");
-        setAllUsers(response.data.users || []);
-      } catch (error) {
-        console.error("Error fetching users:", error);
-      }
-    };
-    getUsers();
-  }, []);
+  // useEffect(() => {
+  //   const getUsers = async () => {
+  //     try {
+  //       const response = await axios.get("/api/user/allusers");
+  //       setAllUsers(response.data.users || []);
+  //     } catch (error) {
+  //       console.error("Error fetching users:", error);
+  //     }
+  //   };
+  //   getUsers();
+  // }, []);
 
-  const checkLog = localStorage.getItem("messanger");
-  console.log(checkLog);
+  // const checkLog = localStorage.getItem("messanger");
+  // console.log(checkLog);
 
   return (
     <div className="space-y-5 border w-1/4 h-screen px-3 py-3 flex flex-col border-slate-400 rounded-md">
@@ -42,11 +43,15 @@ function Left() {
       </div>
       <hr />
       <div className="space-y-2 overflow-y-auto scrollbar-hide flex-1">
-        {allUsers.length > 0 ? (
+        {/* {allUsers.length > 0 ? (
           allUsers.map((user) => <User key={user.id} user={user} />)
         ) : (
           <p className="text-white">Users Not Found</p>
-        )}
+        )} */}
+        <User></User>
+        <User></User>
+        <User></User>
+        <User></User>
       </div>
     </div>
   );

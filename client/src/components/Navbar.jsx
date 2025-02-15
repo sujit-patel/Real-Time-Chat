@@ -6,8 +6,10 @@ import { Link } from "react-router-dom";
 import { IoHomeSharp } from "react-icons/io5";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useAuth } from "../context/AuthProvider";
 
 function Navbar() {
+  const { authUser, setAuthUser } = useAuth();
   const handleLogout = async () => {
     try {
       const token = localStorage.getItem("messanger");
@@ -17,7 +19,9 @@ function Navbar() {
         const res = await axios.post("/api/user/logout");
         localStorage.removeItem("messanger");
         toast.success("Logout Successful...");
-        // window.location.reload();
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
       }
     } catch (error) {
       toast.error("Error : " + error);
@@ -30,15 +34,32 @@ function Navbar() {
         <Link to="/" className="scale-150 hover:text-slate-200" title="Home">
           <IoHomeSharp />
         </Link>
-        <Link to="/signup" className="scale-150 hover:text-slate-200" title="Signup" >
-          <FaUserPlus />
-        </Link>
-        <Link to="/login" className="scale-150 hover:text-slate-200" title="Login">
-          <RiLoginCircleFill />
-        </Link>
-        <button className="scale-150 hover:text-slate-200" title="Logout" onClick={handleLogout}>
-          <RiLogoutCircleFill />
-        </button>
+        {authUser ? (
+          <button
+            className="scale-150 hover:text-slate-200"
+            title="Logout"
+            onClick={handleLogout}
+          >
+            <RiLogoutCircleFill />
+          </button>
+        ) : (
+          <>
+            <Link
+              to="/signup"
+              className="scale-150 hover:text-slate-200"
+              title="Signup"
+            >
+              <FaUserPlus />
+            </Link>
+            <Link
+              to="/login"
+              className="scale-150 hover:text-slate-200"
+              title="Login"
+            >
+              <RiLoginCircleFill />
+            </Link>
+          </>
+        )}
       </div>
     </>
   );

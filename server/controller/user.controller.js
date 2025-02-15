@@ -76,14 +76,3 @@ export const logout = async (req, res) => {
 };
 
 // All Users
-export const allUsers = async (req, res) => {
-    try {
-        // const loggedInUser = req.user._id;
-        // const users = await User.find({ _id: { $ne: loggedInUser } }).select("-password");
-        const users = await User.find().select("-password"); 
-        return res.status(200).json(users);
-    } catch (error) {
-        console.error("Error fetching users:", error);
-        res.status(500).json({ message: "Server Error" });
-    }
-};

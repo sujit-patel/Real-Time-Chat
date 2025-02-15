@@ -1,14 +1,14 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar.jsx";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useAuth } from "../context/AuthProvider.jsx";
 
 function Signup() {
-  const [authUser, setAuthUser] = useAuth();
-  // console.log(authUser);
+  const {authUser, setAuthUser} = useAuth();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -32,6 +32,9 @@ function Signup() {
         }
         localStorage.setItem("messanger", JSON.stringify(response.data));
         setAuthUser(response.data);
+        setTimeout(()=>{
+          navigate("/");
+        },2000);
       })
       .catch((error) => {
         if (error.response) {

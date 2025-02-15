@@ -1,10 +1,14 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { Link, redirect } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar.jsx";
 import toast from "react-hot-toast";
 import axios from "axios";
+import { useAuth } from "../context/AuthProvider.jsx";
+
 function Login() {
+  const { authUser, setAuthUser } = useAuth();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -24,7 +28,10 @@ function Login() {
           toast.success("Login Successful...");
         }
         localStorage.setItem("messanger", JSON.stringify(response.data));
-        window.location.reload();
+        setAuthUser(response.data);
+        setTimeout(() => {
+          navigate("/");
+        }, 1500);
       })
       .catch((error) => {
         if (error.response) {
