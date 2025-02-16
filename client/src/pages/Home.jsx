@@ -15,7 +15,9 @@ function Home() {
             <Right />
           </>
         ) : (
-          ""
+          <div className="w-full h-screen flex items-center justify-center">
+            <p className="text-2xl text-red-500 font-bold">User Not Login...!</p>
+          </div>
         )}
       </div>
     </>
