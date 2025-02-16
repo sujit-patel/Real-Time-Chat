@@ -34,6 +34,13 @@ function Navbar() {
         <Link to="/" className="scale-150 hover:text-slate-200" title="Home">
           <IoHomeSharp />
         </Link>
+        <Link
+          to="/signup"
+          className="scale-150 hover:text-slate-200"
+          title="Signup"
+        >
+          <FaUserPlus />
+        </Link>
         {authUser ? (
           <button
             className="scale-150 hover:text-slate-200"
@@ -43,22 +50,13 @@ function Navbar() {
             <RiLogoutCircleFill />
           </button>
         ) : (
-          <>
-            <Link
-              to="/signup"
-              className="scale-150 hover:text-slate-200"
-              title="Signup"
-            >
-              <FaUserPlus />
-            </Link>
-            <Link
-              to="/login"
-              className="scale-150 hover:text-slate-200"
-              title="Login"
-            >
-              <RiLoginCircleFill />
-            </Link>
-          </>
+          <Link
+            to="/login"
+            className="scale-150 hover:text-slate-200"
+            title="Login"
+          >
+            <RiLoginCircleFill />
+          </Link>
         )}
       </div>
     </>

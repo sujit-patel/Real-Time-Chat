@@ -16,7 +16,9 @@ function Home() {
           </>
         ) : (
           <div className="w-full h-screen flex items-center justify-center">
-            <p className="text-2xl text-red-500 font-bold">User Not Login...!</p>
+            <p className="text-2xl text-red-500 font-bold animate-move">
+              User Not Login...!
+            </p>
           </div>
         )}
       </div>
