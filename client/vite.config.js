@@ -4,7 +4,7 @@ import react from '@vitejs/plugin-react'
 // https://vite.dev/config/
 export default defineConfig({
   server: {
-    port: 5001,
+    port: "https://real-time-chat-sujit-patel.vercel.app",
     proxy: {
       "/api": {
         target: "https://real-time-chat-o5jx.onrender.com",
