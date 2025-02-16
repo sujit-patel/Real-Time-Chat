@@ -7,8 +7,8 @@ export default defineConfig({
     port: 5001,
     proxy: {
       "/api": {
-        target: "https://real-time-chat-o5jx.onrender.com",
-        // target: "http://localhost:4000",
+        // target: "https://real-time-chat-o5jx.onrender.com",
+        target: "http://localhost:4000",
         changeOrigin: true,
         secure: true,
       },
