@@ -12,7 +12,7 @@ const app = express();
 app.use(cookieParser());
 app.use(express.json());
 app.use(cors());
-const PORT = process.env.PORT || 4001;
+const PORT = process.env.PORT || 5001;
 const URL = process.env.MONGODB_URL;
 
 try {
