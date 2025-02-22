@@ -7,42 +7,55 @@ export const sendMessage = async (req, res) => {
         const { id: receiverId } = req.params;
         const senderId = req.user._id;
 
-        // conversation creation
+        // Find or create conversation
         let conversation = await Conversation.findOne({
-            participants: { $all: [senderId, receiverId] }
+            members: { $all: [senderId, receiverId] }
         });
+
         if (!conversation) {
             conversation = await Conversation.create({
-                participants: [senderId, receiverId]
+                members: [senderId, receiverId],
+                messages: []
             });
         }
 
-        // messages
-        const newMessage = await new Message({
+        // Create new message
+        const newMessage = new Message({
             senderId,
             receiverId,
             message,
         });
 
-        if (newMessage) {
-            conversation.messages.push(newMessage._id);
-        }
-        // await newMessage.save();
-        // Push the new message to the conversation and save it
-        // await conversation.save();
-
-        if (newMessage) {
-            conversation.messages.push(newMessage._id);
-        }
+        // Push message to conversation and save both
+        conversation.messages.push(newMessage._id);
         await Promise.all([conversation.save(), newMessage.save()]);
+
         res.status(201).json({ message: "Message Sent Successfully", newMessage });
 
     } catch (error) {
-        console.log("Error in Sending Message :" + error);
-        res.status(500).json({ message: "Intenal Server Error" });
+        console.error("Error in Sending Message:", error);
+        res.status(500).json({ message: "Internal Server Error" });
     }
-}
+};
 
-export const getMessage = async () => {
-    console.log("first")
- }
+
+export const getMessage = async (req, res) => {
+    try {
+        const { id: chatUser } = req.params;
+        const senderId = req.user._id; // Logged-in user
+
+        let conversation = await Conversation.findOne({
+            members: { $all: [senderId, chatUser] },
+        }).populate("messages");
+
+        if (!conversation) {
+            return res.status(200).json([]);
+        }
+
+        const messages = conversation.messages || [];
+        return res.status(200).json({ messages });
+    } catch (error) {
+        console.error("Message fetching error:", error);
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
+};
