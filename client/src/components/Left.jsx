@@ -20,7 +20,7 @@ function Left() {
   return (
     <div className="space-y-5 border w-1/4 h-screen px-3 py-3 flex flex-col border-slate-400 rounded-md">
       <div>
-        <h1 className="text-4xl font-bold text-center pb-3">Chat</h1>
+        <h1 className="text-4xl font-bold text-center pb-3">Chats</h1>
         <label className="input input-bordered flex items-center gap-2">
           <input type="text" className="grow" placeholder="Search" />
           <svg

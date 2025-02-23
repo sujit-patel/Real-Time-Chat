@@ -1,7 +1,7 @@
 import React from "react";
 import userImg from "../assets/user profile.png";
 
-function Chat() {
+function Chat({message}) {
   return (
     <div>
       <div className="chat chat-start">
@@ -18,7 +18,7 @@ function Chat() {
           {/* Obi-Wan Kenobi */}
           <time className="text-xs opacity-50">12:45</time>
         </div>
-        <div className="chat-bubble">You were the Chosen One!</div>
+        <div className="chat-bubble">ok</div>
         {/* <div className="chat-footer opacity-50">Delivered</div> */}
       </div>
       <div className="chat chat-end">
@@ -35,7 +35,7 @@ function Chat() {
           {/* Anakin */}
           <time className="text-xs opacity-50">12:46</time>
         </div>
-        <div className="chat-bubble">I hate you!</div>
+        <div className="chat-bubble">{message.message}</div>
         {/* <div className="chat-footer opacity-50">Seen at 12:46</div> */}
       </div>
     </div>

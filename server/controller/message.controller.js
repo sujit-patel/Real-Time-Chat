@@ -15,7 +15,7 @@ export const sendMessage = async (req, res) => {
         if (!conversation) {
             conversation = await Conversation.create({
                 members: [senderId, receiverId],
-                messages: []
+                // messages: []
             });
         }
 
@@ -25,9 +25,12 @@ export const sendMessage = async (req, res) => {
             receiverId,
             message,
         });
+        if (newMessage) {
+            conversation.messages.push(newMessage._id);
+        }
 
         // Push message to conversation and save both
-        conversation.messages.push(newMessage._id);
+        // conversation.messages.push(newMessage._id);
         await Promise.all([conversation.save(), newMessage.save()]);
 
         res.status(201).json({ message: "Message Sent Successfully", newMessage });
