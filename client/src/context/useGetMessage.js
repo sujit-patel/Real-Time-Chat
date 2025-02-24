@@ -20,10 +20,7 @@ const useGetMessage = () => {
                     console.log("Error in getting messages", error);
                     setLoading(false);
                 }
-            } 
-            // else {
-            //     setMessages([]);
-            // }
+            }
         };
         getMessages();
     }, [selectedConversation, setMessages]);
