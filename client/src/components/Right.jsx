@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Chat from "./Chat";
 import { IoSend } from "react-icons/io5";
 import userImg from "../assets/user profile.png";
@@ -21,6 +21,15 @@ function Right() {
     setNewMessages("");
   };
 
+  //last message
+  const lastMessageRef = useRef();
+  useEffect(() => {
+    setTimeout(() => {
+      if (lastMessageRef.current) {
+        lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
+      }
+    }, 1000);
+  }, [messages]);
   return (
     <div className="h-screen w-full flex gap-2 py-2 flex-col">
       {/* User Profile Header */}

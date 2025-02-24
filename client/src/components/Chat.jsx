@@ -5,7 +5,7 @@ function Chat({ message }) {
   const authUser = JSON.parse(localStorage.getItem("messanger"));
   const itsMe = message.senderId === authUser.user._id;
   const chatName = itsMe ? "chat-end" : "chat-start";
-  const chatColor = itsMe ? "chat-bubble-info" : "chat-bubble-accent";
+  const chatColor = itsMe ? "chat-bubble-accent" : "chat-bubble-info";
   return (
     <div>
       <div className={`chat ${chatName}`}>

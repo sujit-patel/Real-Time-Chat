@@ -15,7 +15,9 @@ const useGetMessage = () => {
                         `/api/message/get/${selectedConversation._id}`
                     );
                     setMessages(res.data);
-                    setLoading(false);
+                    setTimeout(() => {
+                        setLoading(false);
+                    }, 1000);
                 } catch (error) {
                     console.log("Error in getting messages", error);
                     setLoading(false);
