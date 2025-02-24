@@ -17,7 +17,7 @@ function Right() {
     <div className="h-screen w-full flex gap-2 py-2 flex-col">
       {/* User Profile Header */}
       <div>
-        <div className="flex gap-5 bg-slate-700 border border-slate-400 hover:bg-slate-600 p-2 rounded-md cursor-pointer">
+        <div className="flex gap-5 bg-slate-800 border border-slate-400 hover:bg-slate-700 p-2 rounded-md cursor-pointer">
           <div className="avatar online">
             <div className="w-14 rounded-full">
               <img src={userImg} className="scale-150" alt="User Avatar" />
@@ -33,7 +33,11 @@ function Right() {
       </div>
 
       {/* Chat Messages */}
-      <div className="border border-slate-400 rounded-md px-3 py-2 overflow-y-auto flex-1 scrollbar-hide">
+      <div
+        className={`${
+          loading ? "p-1" : "px-3 py-2"
+        } border border-slate-400 rounded-md overflow-y-auto flex-1 scrollbar-hide`}
+      >
         {loading ? (
           <Loading />
         ) : (
