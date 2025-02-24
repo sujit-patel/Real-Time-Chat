@@ -8,7 +8,10 @@ import Loading from "../components/Loading.jsx";
 
 function Right() {
   const { selectedConversation } = useConversation();
-  const { messages, loading } = useGetMessage();
+  const { loading, messages } = useGetMessage();
+  // console.log(messages);
+  console.log(messages);
+  console.log(messages.messages);
 
   return (
     <div className="h-screen w-full flex gap-2 py-2 flex-col">
@@ -22,7 +25,7 @@ function Right() {
           </div>
           <div>
             <h1 className="text-xl">
-              {selectedConversation?.fullname || "Sujit Patel"}
+              {selectedConversation?.fullname || "sujit patel"}
             </h1>
             <p className="text-sm">Online</p>
           </div>
@@ -33,13 +36,15 @@ function Right() {
       <div className="border border-slate-400 rounded-md px-3 py-2 overflow-y-auto flex-1 scrollbar-hide">
         {loading ? (
           <Loading />
-        ) : Array.isArray(messages) && messages.length > 0 ? (
-          messages.map((message) => (
+        ) : (
+          messages.messages?.length > 0 &&
+          messages.messages.map((message) => (
             <Chat key={message._id} message={message} />
           ))
-        ) : (
-          <div className="flex h-full justify-center items-center">
-            <p className="text-4xl font-bold">Say Hello 👋</p>
+        )}
+        {!loading && messages.length === 0 && (
+          <div className="flex justify-center font-bold text-2xl h-full items-center">
+            <p className=" text-center">Say! Hi 👋 to start the conversation</p>
           </div>
         )}
       </div>
