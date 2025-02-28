@@ -1,11 +1,11 @@
+import { getReceiverSocketId, io } from "../SocketIO/server.js"
 import Conversation from "../models/conversation.model.js"
 import Message from "../models/message.model.js";
-
 export const sendMessage = async (req, res) => {
     try {
         const { message } = req.body;
         const { id: receiverId } = req.params;
-        const senderId = req.user._id;
+        const senderId = req.user._id; // Logged-in user
 
         // Find or create conversation
         let conversation = await Conversation.findOne({
@@ -15,7 +15,6 @@ export const sendMessage = async (req, res) => {
         if (!conversation) {
             conversation = await Conversation.create({
                 members: [senderId, receiverId],
-                // messages: []
             });
         }
 
@@ -25,13 +24,24 @@ export const sendMessage = async (req, res) => {
             receiverId,
             message,
         });
+
         if (newMessage) {
             conversation.messages.push(newMessage._id);
         }
 
-        // Push message to conversation and save both
-        // conversation.messages.push(newMessage._id);
         await Promise.all([conversation.save(), newMessage.save()]);
+
+        // Fetch receiver socket ID
+        const receiverSocketId = getReceiverSocketId(receiverId);
+        if (receiverSocketId) {
+            io.to(receiverSocketId).emit("newMessage", newMessage);
+        }
+
+        // Fetch sender socket ID
+        // const senderSocketId = getReceiverSocketId(senderId);
+        // if (senderSocketId) {
+        //     io.to(senderSocketId).emit("newMessage", newMessage);
+        // }
 
         res.status(201).json({ message: "Message Sent Successfully", newMessage });
 
@@ -54,7 +64,6 @@ export const getMessage = async (req, res) => {
         if (!conversation) {
             return res.status(200).json([]);
         }
-
         const messages = conversation.messages || [];
         return res.status(200).json({ messages });
     } catch (error) {

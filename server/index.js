@@ -5,13 +5,14 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import userRoute from './routes/user.route.js';
 import messageRouter from './routes/message.route.js';
+import { app, server } from './SocketIO/server.js';
 
 dotenv.config();
-const app = express();
 
-app.use(cookieParser());
 app.use(express.json());
+app.use(cookieParser());
 app.use(cors());
+
 const PORT = process.env.PORT || 5001;
 const URL = process.env.MONGODB_URL;
 
@@ -25,6 +26,6 @@ try {
 app.use('/api/user', userRoute);
 app.use('/api/message', messageRouter);
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
