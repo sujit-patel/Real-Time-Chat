@@ -33,7 +33,7 @@ export const sendMessage = async (req, res) => {
         // conversation.messages.push(newMessage._id);
         await Promise.all([conversation.save(), newMessage.save()]);
 
-        res.status(201).json({ message: "Message Sent Successfully", newMessage });
+        res.status(201).json({ newMessage });
 
     } catch (error) {
         console.error("Error in Sending Message:", error);
@@ -55,8 +55,8 @@ export const getMessage = async (req, res) => {
             return res.status(200).json([]);
         }
 
-        const messages = conversation.messages || [];
-        return res.status(200).json({ messages });
+        const messages = conversation.messages;
+        return res.status(200).json(messages);
     } catch (error) {
         console.error("Message fetching error:", error);
         return res.status(500).json({ message: "Internal Server Error" });

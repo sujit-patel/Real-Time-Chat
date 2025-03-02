@@ -7,7 +7,7 @@ import axios from "axios";
 import { useAuth } from "../context/AuthProvider.jsx";
 
 function Login() {
-  const { authUser, setAuthUser } = useAuth();
+  const [ authUser, setAuthUser ] = useAuth();
   const navigate = useNavigate();
   const {
     register,

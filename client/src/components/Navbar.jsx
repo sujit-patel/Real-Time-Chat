@@ -9,7 +9,7 @@ import toast from "react-hot-toast";
 import { useAuth } from "../context/AuthProvider";
 
 function Navbar() {
-  const { authUser, setAuthUser } = useAuth();
+  const [ authUser, setAuthUser ] = useAuth();
   const handleLogout = async () => {
     try {
       const token = localStorage.getItem("messanger");

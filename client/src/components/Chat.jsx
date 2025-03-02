@@ -1,41 +1,25 @@
 import React from "react";
-import userImg from "../assets/user profile.png";
+import userImg from "../assets/my_profile.webp";
 
 function Chat({ message }) {
+  const authUser = JSON.parse(localStorage.getItem("messanger"));
+  const itsMe = message.senderId === authUser.user._id;
+  const chatName = itsMe ? "chat-end" : "chat-start";
+  const chatColor = itsMe ? "chat-bubble-accent" : "chat-bubble-info";
   return (
     <div>
-      <div className="chat chat-start">
+      <div className={`chat ${chatName}`}>
         <div className="chat-image avatar">
           <div className="w-10 rounded-full">
-            <img
-              alt="Tailwind CSS chat bubble component"
-              src={userImg}
-              className="scale-150"
-            />
+            <img alt="User Avatar" src={userImg} />
           </div>
         </div>
         <div className="chat-header">
-          {/* <time className="text-xs opacity-50">12:45</time> */}
+          <time className="text-xs opacity-50">
+            {new Date(message.createdAt).toLocaleTimeString()}
+          </time>
         </div>
-        <div className="chat-bubble">ok</div>
-        {/* <div className="chat-footer opacity-50">Delivered</div> */}
-      </div>
-      <div className="chat chat-end">
-        <div className="chat-image avatar">
-          <div className="w-10 rounded-full">
-            <img
-              alt="Tailwind CSS chat bubble component"
-              src={userImg}
-              className="scale-150"
-            />
-          </div>
-        </div>
-        <div className="chat-header">
-          {/* Anakin */}
-          {/* <time className="text-xs opacity-50">12:46</time> */}
-        </div>
-        <div className="chat-bubble">{message.message}</div>
-        {/* <div className="chat-footer opacity-50">Seen at 12:46</div> */}
+        <div className={`chat-bubble ${chatColor}`}>{message.message}</div>
       </div>
     </div>
   );

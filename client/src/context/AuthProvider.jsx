@@ -5,13 +5,13 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const initialUserState =
-    localStorage.getItem("messanger") || Cookies.get("jwt");
+    Cookies.get("jwt") || localStorage.getItem("messanger");
   const [authUser, setAuthUser] = useState(
     initialUserState ? JSON.parse(initialUserState) : undefined
   );
 
   return (
-    <AuthContext.Provider value={{ authUser, setAuthUser }}>
+    <AuthContext.Provider value={[ authUser, setAuthUser ]}>
       {children}
     </AuthContext.Provider>
   );

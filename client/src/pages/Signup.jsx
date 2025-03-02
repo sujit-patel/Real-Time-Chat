@@ -7,7 +7,7 @@ import toast from "react-hot-toast";
 import { useAuth } from "../context/AuthProvider.jsx";
 
 function Signup() {
-  const {authUser, setAuthUser} = useAuth();
+  const [authUser, setAuthUser] = useAuth();
   const navigate = useNavigate();
   const {
     register,

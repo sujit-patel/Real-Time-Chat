@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import User from "./User";
+import User from "./User.jsx";
 import axios from "axios";
 
 function Left() {
@@ -18,7 +18,7 @@ function Left() {
   }, []);
 
   return (
-    <div className="space-y-5 border w-1/4 h-screen px-3 py-3 flex flex-col border-slate-400 rounded-md">
+    <div className="space-y-5 border w-1/4 max-h-screen px-3 my-2 py-3 flex flex-col border-slate-600 rounded-md">
       <div>
         <h1 className="text-4xl font-bold text-center pb-3">Chats</h1>
         <label className="input input-bordered flex items-center gap-2">
