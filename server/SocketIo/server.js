@@ -1,8 +1,9 @@
 import { Server } from "socket.io";
-import express from "express";
 import http from "http";
+import express from "express";
 
 const app = express();
+
 const server = http.createServer(app);
 
 const io = new Server(server, {
@@ -12,31 +13,28 @@ const io = new Server(server, {
     },
 });
 
-const users = {};
-
-// real time message
+//real time message
 export const getReceiverSocketId = (receiverId) => {
     return users[receiverId];
-};
+}
 
+const users = {};
 io.on("connection", (socket) => {
-    console.log("User Connected:", socket.id);
-
+    console.log("New Client Connected", socket.id);
     const userId = socket.handshake.query.userId;
+
     if (userId) {
         users[userId] = socket.id;
-        console.log("Welcome users:", users);
+        console.log("Welcome : ", users);
+    } else {
+        console.log("User ID not provided.");
     }
 
-    // online users
-    io.emit("getOnlineUsers", Object.keys(users));
-
+    io.emit("getOnline", Object.keys(users));
     socket.on("disconnect", () => {
-        console.log("User Disconnected:", socket.id);
-        if (userId) {
-            delete users[userId];
-            io.emit("getOnlineUsers", Object.keys(users));
-        }
+        console.log("Client Disconnected", socket.id);
+        delete users[userId];
+        io.emit("getOnline", Object.keys(users));
     });
 });
 
