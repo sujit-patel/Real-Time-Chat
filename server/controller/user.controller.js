@@ -76,7 +76,7 @@ export const logout = async (req, res) => {
 };
 
 // All Users
-export const getAllUsers = async (req, res) => {
+export const getallusers = async (req, res) => {
     try {
         const loggedUser = req.user._id;
         const filteredUsers = await User.find({ _id: { $ne: loggedUser } }).select("-password");
