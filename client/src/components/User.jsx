@@ -1,10 +1,13 @@
 import React from "react";
 import userImg from "../assets/my_profile.webp";
 import useConversation from "../stateManage/useConversation.js";
+import { useSocketContext } from "../context/SocketContext.jsx";
 
 function User({ user }) {
   const { selectedConversation, setSelectedConversation } = useConversation();
   const isSelected = selectedConversation?._id === user._id;
+  const { socket, onlineUsers } = useSocketContext();
+  const itsMe = onlineUsers.includes(user._id);
 
   const handleClick = () => {
     setSelectedConversation(user);
@@ -17,8 +20,7 @@ function User({ user }) {
         ${isSelected ? "bg-slate-600" : ""}`}
         onClick={handleClick}
       >
-        {/* <div className={`avatar  ${isOnline ? "online" : "offline"}`}> */}
-        <div className="avatar online">
+        <div className={`avatar ${itsMe ? "online" : "offline"}`}>
           <div className="ring-primary ring-offset-base-100 w-14 rounded-full ring ring-offset-2">
             <img src={userImg} />
           </div>

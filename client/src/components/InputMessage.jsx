@@ -1,17 +1,16 @@
 import React, { useState } from "react";
 import { IoSend } from "react-icons/io5";
-// import useSendMessage from "../context/useSendMessage.js";
+import useSendMessage from "../context/useSendMessage.js";
 
 export default function InputMessage() {
-  // const { sendMessages } = useSendMessage();
-  const [messages, setMessages] = useState("");
-
-  // console.log(messages);
+  const { loading, sendMessages } = useSendMessage();
+  const [message, setMessage] = useState("");
+  console.log(message);
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (!messages.trim()) return;
-    // await sendMessages(messages);
-    setMessages("");
+    if (!message.trim()) return;
+    await sendMessages(message);
+    setMessage("");
   };
   return (
     <>
@@ -19,8 +18,8 @@ export default function InputMessage() {
         <div className="relative">
           <input
             type="text"
-            value={messages}
-            onChange={(e) => setMessages(e.target.value)}
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
             placeholder="Send Message"
             className="input input-bordered w-full pr-10"
           />

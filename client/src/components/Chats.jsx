@@ -1,41 +1,41 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import Chat from "./Chat";
 import useGetMessage from "../context/useGetMessage.js";
 import Loading from "./Loading.jsx";
-import useConversation from "../stateManage/useConversation.js";
+import useGetSocketMessage from "../context/useGetSocketMessage.js";
 
 function Chats() {
   const { loading, messages } = useGetMessage();
-  const { selectedConversation } = useConversation();
-  const [showChat, setShowChat] = useState(false);
+  useGetSocketMessage();
+  const lastMsgRef = useRef();
 
   useEffect(() => {
-    setShowChat(false);
     setTimeout(() => {
-      setShowChat(true);
-    }, 1000);
-    setShowChat(false);
-  }, [selectedConversation]);
+      if (lastMsgRef.current) {
+        lastMsgRef.current.scrollIntoView({ behavior: "smooth" });
+      }
+    }, 200);
+  }, [messages]);
 
   return (
     <div
       className={`chat-container h-full ${
-        loading || !showChat ? "p-1" : "p-4"
+        loading ? "p-1" : "p-4"
       } scrollbar-hide overflow-y-auto`}
     >
-      {loading || !showChat ? (
+      {loading ? (
         <Loading />
       ) : (
         messages.length > 0 &&
         messages.map((message) => (
-          <div key={message._id}>
+          <div key={message._id} ref={lastMsgRef}>
             <Chat message={message} />
           </div>
         ))
       )}
 
       {!loading && messages.length === 0 && (
-        <div className=" h-full flex items-center justify-center">
+        <div className="h-full flex items-center justify-center">
           <p className="text-3xl font-bold text-gray-500">
             Say! Hi 👋 to start the conversation
           </p>
