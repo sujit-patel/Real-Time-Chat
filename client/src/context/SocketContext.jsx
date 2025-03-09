@@ -20,16 +20,11 @@ export const SocketProvider = ({ children }) => {
         },
       });
       setSocket(socket);
-      socket.on("getOnlineUsers", (users) => {
+      socket.on("onlineUsers", (users) => {
         setOnlineUsers(users);
-        console.log("Socket Connected");
+        console.log("Received Online Users:", users);
       });
-      return () => socket.close();
-    } else {
-      if (socket) {
-        socket.close();
-        setSocket(null);
-      }
+      return () => socket.disconnect();
     }
   }, [authUser]);
 

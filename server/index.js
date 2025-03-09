@@ -5,11 +5,7 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import userRoute from './routes/user.route.js';
 import messageRouter from './routes/message.route.js';
-<<<<<<< HEAD
-import { app, server } from "./SocketIo/server.js";
-=======
-import { app, server } from './SocketIO/server.js';
->>>>>>> 1ffa86429a97ce6e4c3a25e089084db5e07f6cd2
+import { app, server } from './SocketIo/server.js';
 
 dotenv.config();
 

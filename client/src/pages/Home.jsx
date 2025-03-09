@@ -6,11 +6,7 @@ import { useAuth } from "../context/AuthProvider.jsx";
 import useConversation from "../stateManage/useConversation.js";
 import Welcome from "../components/Welcome.jsx";
 function Home() {
-<<<<<<< HEAD
   const [authUser, setAuthUser] = useAuth();
-=======
-  const { authUser, setAuthUser } = useAuth();
->>>>>>> 1ffa86429a97ce6e4c3a25e089084db5e07f6cd2
   const { selectedConversation } = useConversation();
 
   return (
