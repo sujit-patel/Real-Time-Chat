@@ -4,10 +4,9 @@ import react from '@vitejs/plugin-react'
 // https://vite.dev/config/
 export default defineConfig({
   server: {
-    port: "4000",
     proxy: {
       "/api": {
-        target: "https://real-time-chat-9fh3.onrender.com",
+        target: process.env.VITE_BACKEND_URL,
         changeOrigin: true,
         secure: false,
       },

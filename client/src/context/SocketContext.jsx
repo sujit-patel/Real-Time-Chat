@@ -14,7 +14,8 @@ export const SocketProvider = ({ children }) => {
 
   useEffect(() => {
     if (authUser) {
-      const socket = io("https://real-time-chat-9fh3.onrender.com", {
+      const socketUrl = import.meta.env.VITE_BACKEND_URL;
+      const socket = io(socketUrl, {
         query: {
           userId: authUser.user._id,
         },
