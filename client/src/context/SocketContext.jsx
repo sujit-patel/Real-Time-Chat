@@ -22,7 +22,6 @@ export const SocketProvider = ({ children }) => {
       setSocket(socket);
       socket.on("onlineUsers", (users) => {
         setOnlineUsers(users);
-        console.log("Received Online Users:", users);
       });
       return () => socket.disconnect();
     }

@@ -11,7 +11,6 @@ function User({ user }) {
 
   const handleClick = () => {
     setSelectedConversation(user);
-    console.log("Selected user : " + user.fullname);
   };
   return (
     <>
