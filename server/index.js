@@ -19,11 +19,11 @@ app.use(
   })
 );
 
-const PORT = process.env.PORT || 5001;
 const URL = process.env.MONGODB_URL;
+const PORT = process.env.PORT || 5001;
 
 try {
-  mongoose.connect(URL);
+  mongoose.connect(URL, { useNewUrlParser: true, useUnifiedTopology: true });
   console.log('MongoDB Connected');
 } catch (error) {
   console.log('MongoDB Connection Error:', error);
