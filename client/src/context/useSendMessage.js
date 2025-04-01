@@ -12,7 +12,7 @@ const useSendMessage = () => {
         if (!selectedConversation) return;
         setLoading(true);
         try {
-            const res = await axios.post(`/api/message/send/${selectedConversation._id}`, { message });
+            const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/message/send/${selectedConversation._id}`, { message });
             
             setMessages([...messages, res.data]);
             console.log("Message Sent:", res.data);

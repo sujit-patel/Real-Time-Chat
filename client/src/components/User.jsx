@@ -1,5 +1,5 @@
 import React from "react";
-import userImg from "../assets/my_profile.webp";
+import userImg from "/assets/my_profile.webp";
 import useConversation from "../stateManage/useConversation.js";
 import { useSocketContext } from "../context/SocketContext.jsx";
 

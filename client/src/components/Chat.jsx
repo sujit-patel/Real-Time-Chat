@@ -1,5 +1,4 @@
 import React from "react";
-import userImg from "../assets/my_profile.webp";
 
 function Chat({ message }) {
   const authUser = JSON.parse(localStorage.getItem("messanger"));
@@ -11,7 +10,7 @@ function Chat({ message }) {
       <div className={`chat ${chatName}`}>
         <div className="chat-image avatar">
           <div className="w-10 rounded-full">
-            <img alt="User Avatar" src={userImg} />
+            <img alt="User Avatar" src="/assets/my_profile.webp" />
           </div>
         </div>
         <div className="chat-header">

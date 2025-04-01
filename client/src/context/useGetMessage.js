@@ -12,7 +12,7 @@ const useGetMessage = () => {
             if (selectedConversation && selectedConversation._id) {
                 try {
                     const res = await axios.get(
-                        `/api/message/get/${selectedConversation._id}`
+                        `${import.meta.env.VITE_BACKEND_URL}/api/message/get/${selectedConversation._id}`
                     );
                     setMessages(res.data);
                     setLoading(false);

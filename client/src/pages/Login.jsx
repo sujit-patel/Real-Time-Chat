@@ -22,7 +22,7 @@ function Login() {
     };
 
     await axios
-      .post("/api/user/login", userInfo)
+      .post(`${import.meta.env.VITE_BACKEND_URL}/api/user/login`, userInfo)
       .then((response) => {
         if (response.data) {
           toast.success("Login Successful...");

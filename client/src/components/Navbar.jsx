@@ -16,7 +16,7 @@ function Navbar() {
       if (!token) {
         toast.error("Already Logout User...");
       } else {
-        const res = await axios.post("/api/user/logout");
+        const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/user/logout`);
         localStorage.removeItem("messanger");
         toast.success("Logout Successful...");
         setTimeout(() => {

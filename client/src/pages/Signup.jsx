@@ -25,7 +25,7 @@ function Signup() {
       confirmpassword: data.confirmpassword,
     };
     await axios
-      .post("/api/user/signup", userInfo)
+      .post(`${import.meta.env.VITE_BACKEND_URL}/api/user/signup`, userInfo)
       .then((response) => {
         if (response.data) {
           toast.success("Signup successful");
