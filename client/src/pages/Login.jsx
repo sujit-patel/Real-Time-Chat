@@ -7,7 +7,7 @@ import axios from "axios";
 import { useAuth } from "../context/AuthProvider.jsx";
 
 function Login() {
-  const [ authUser, setAuthUser ] = useAuth();
+  const [authUser, setAuthUser] = useAuth();
   const navigate = useNavigate();
   const {
     register,
@@ -22,7 +22,9 @@ function Login() {
     };
 
     await axios
-      .post(`${import.meta.env.VITE_BACKEND_URL}/api/user/login`, userInfo)
+      .post(`${import.meta.env.VITE_BACKEND_URL}/api/user/login`, userInfo, {
+        withCredentials: true,
+      })
       .then((response) => {
         if (response.data) {
           toast.success("Login Successful...");
