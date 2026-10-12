@@ -9,8 +9,10 @@ export default function InputMessage() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (!message.trim()) return;
-    await sendMessages(message);
-    setMessage("");
+    const success = await sendMessages(message);
+    if (success) {
+      setMessage("");
+    }
   };
   return (
     <form onSubmit={handleSubmit} className="message-input-form">

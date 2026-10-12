@@ -13,19 +13,29 @@ export const SocketProvider = ({ children }) => {
   const [authUser] = useAuth();
 
   useEffect(() => {
-    if (authUser) {
+    const userId = authUser?.user?._id || authUser?._id;
+    if (userId) {
       const socketUrl = import.meta.env.VITE_BACKEND_URL;
-      const socket = io(socketUrl, {
+      const newSocket = io(socketUrl, {
         query: {
-          userId: authUser.user._id,
+          userId,
         },
       });
-      setSocket(socket);
-      socket.on("onlineUsers", (users) => {
+      setSocket(newSocket);
+
+      newSocket.on("onlineUsers", (users) => {
         setOnlineUsers(users);
         console.log("Received Online Users:", users);
       });
-      return () => socket.disconnect();
+
+      return () => {
+        newSocket.close();
+      };
+    } else {
+      if (socket) {
+        socket.close();
+        setSocket(null);
+      }
     }
   }, [authUser]);
 

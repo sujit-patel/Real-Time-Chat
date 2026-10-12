@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
-import Chat from "./Chat";
+import React, { useEffect, useRef } from "react";
+import Chat from "./Chat.jsx";
 import useGetMessage from "../context/useGetMessage.js";
 import Loading from "./Loading.jsx";
 import useConversation from "../stateManage/useConversation.js";
@@ -8,38 +8,29 @@ import useGetSocketMessage from "../context/useGetSocketMessage.js";
 function Chats() {
   const { loading, messages } = useGetMessage();
   const { selectedConversation } = useConversation();
-  const [showChat, setShowChat] = useState(false);
   const lastMsgRef = useRef(null);
 
   useGetSocketMessage();
+
   useEffect(() => {
-    if (showChat && lastMsgRef.current) {
+    if (lastMsgRef.current) {
       setTimeout(() => {
-        lastMsgRef.current.scrollIntoView({ behavior: "smooth" });
+        lastMsgRef.current?.scrollIntoView({ behavior: "smooth" });
       }, 100);
     }
-  }, [messages, showChat]);
-
-  useEffect(() => {
-    setShowChat(false);
-    const timer = setTimeout(() => {
-      setShowChat(true);
-    }, 1000);
-
-    return () => clearTimeout(timer);
-  }, [selectedConversation]);
+  }, [messages]);
 
   return (
     <div
       className={`chat-container h-full ${
-        loading || !showChat ? "p-1" : "p-4"
+        loading ? "p-1" : "p-4"
       } scrollbar-hide overflow-y-auto`}
     >
-      {loading || !showChat ? (
+      {loading ? (
         <Loading />
-      ) : messages.length > 0 ? (
+      ) : messages && messages.length > 0 ? (
         messages.map((message) => (
-          <div key={message._id} ref={lastMsgRef}>
+          <div key={message._id || Math.random()} ref={lastMsgRef}>
             <Chat message={message} />
           </div>
         ))

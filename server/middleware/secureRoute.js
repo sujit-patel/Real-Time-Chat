@@ -3,7 +3,10 @@ import User from "../models/user.model.js";
 
 const secureRoute = async (req, res, next) => {
     try {
-        const token = req.cookies.jwt;
+        const authHeader = req.headers.authorization;
+        const bearerToken = authHeader && authHeader.startsWith("Bearer ") ? authHeader.split(" ")[1] : null;
+        const token = req.cookies?.jwt || bearerToken;
+
         if (!token) {
             return res.status(401).json({ message: "No Token Provided" });
         }
@@ -22,7 +25,7 @@ const secureRoute = async (req, res, next) => {
         next();
     } catch (error) {
         console.error("Error in secureRoute:", error);
-        res.status(500).json({ message: "Internal Server Error" });
+        return res.status(401).json({ message: "Invalid or expired token" });
     }
 };
 

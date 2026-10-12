@@ -1,0 +1,186 @@
+================================================================================
+          PROJECT CHANGES & FIXES REPORT: REAL TIME CHAT APPLICATION
+================================================================================
+Generated on: 2026-10-12
+Project Path: d:\big project\Real Time Chat
+
+SUMMARY OF KEY FEATURES & FIXES:
+--------------------------------------------------------------------------------
+1. Message Conversation Fetching & Real-Time Sync:
+   - Fixed missing `withCredentials` and `Authorization` headers on Axios calls.
+   - Fixed `reciverId` typo in Message model to `receiverId`.
+   - Updated `sendMessage` controller to return direct message document.
+   - Fixed Socket null crash and stale closures in `useGetSocketMessage`.
+   - Removed artificial 1000ms delay in `Chats.jsx`.
+
+2. Profile Picture Upload & Custom Avatar Feature:
+   - Added optional profile image selection during User Signup with live preview.
+   - Added user profile picture update endpoint `PUT /api/user/profile`.
+   - Added a sleek interactive Profile Modal in the Navbar allowing logged-in
+     users to view their details and update/upload their profile picture anytime.
+   - Custom avatar displays across the whole app:
+     * Left sidebar contacts list (`User.jsx`)
+     * Active chat header (`Right.jsx`)
+     * Message conversation bubbles for both sender and receiver (`Chat.jsx`)
+     * Main navigation bar (`Navbar.jsx`)
+   - If user does not upload an image, it seamlessly falls back to the default
+     profile image (`/assets/my_profile.webp`) with error handling.
+
+3. Daily Limits Configuration (Easy to adjust or remove anytime):
+   - Daily Registration Limit: Max 10 users registered per day.
+     * Controlled by `MAX_DAILY_REGISTRATIONS = 10` in `user.controller.js`.
+     * Rejects 11th registration attempt with clear message.
+   - Daily Message Limit per User: Max 10 messages sent per day across all chats.
+     * Controlled by `MAX_DAILY_MESSAGES_PER_USER = 10` in `message.controller.js`.
+     * User can send e.g. 5 messages to User A and 5 to User B (total 10).
+     * Any further attempt displays a toast notification and preserves user input.
+
+================================================================================
+HOW TO REMOVE OR MODIFY THE DAILY LIMITS LATER
+================================================================================
+To remove or modify the limits at any time:
+
+1. Registration Limit:
+   File: server/controller/user.controller.js
+   Line 5: Set `const MAX_DAILY_REGISTRATIONS = null;` or change number 10.
+
+2. Message Limit:
+   File: server/controller/message.controller.js
+   Line 6: Set `const MAX_DAILY_MESSAGES_PER_USER = null;` or change number 10.
+
+================================================================================
+DETAILED FILE-BY-FILE CHANGES
+================================================================================
+
+--------------------------------------------------------------------------------
+PART 1: SERVER / BACKEND CHANGES
+--------------------------------------------------------------------------------
+
+1. server/models/user.model.js
+   - Added `profilePic: { type: String, default: "" }` to User schema.
+
+2. server/models/message.model.js
+   - Changed field `reciverId` -> `receiverId` to fix typo.
+   - Changed `require: true` -> `required: true` for proper Mongoose schema validation.
+   - Standardized Schema creation using `new mongoose.Schema(...)`.
+
+3. server/models/conversation.model.js
+   - Changed model refs from imported variables (`ref: User`, `ref: Message`) to
+     standard string references (`ref: "User"`, `ref: "Message"`).
+   - Removed unused `mongo` import from `{ mongo }`.
+
+4. server/controller/message.controller.js
+   - Added `MAX_DAILY_MESSAGES_PER_USER = 10` daily limit check.
+     Counts messages sent by `senderId` on current day using `Message.countDocuments`.
+   - In `sendMessage`: Changed response to `res.status(201).json(newMessage)`.
+   - Initialized `messages: []` explicitly when creating a new conversation.
+   - In `getMessage`: Ensured fallback `conversation.messages || []`.
+
+5. server/middleware/secureRoute.js
+   - Added support to extract JWT token from BOTH:
+     * `req.cookies.jwt` (HttpOnly cookie)
+     * `req.headers.authorization` ("Bearer <token>")
+   - Handled JWT verification failures and expired tokens gracefully by returning
+     HTTP 401 ("Invalid or expired token") instead of throwing a 500 Internal Error.
+
+6. server/jwt/tokenGenerate.js
+   - Updated `createTokenAndCookie` to return the generated JWT `token` string so
+     controllers can include it in response payloads.
+   - Configured `sameSite` to `"lax"` in development and `"none"` in production
+     for reliable cross-origin cookie delivery.
+
+7. server/controller/user.controller.js
+   - Added `MAX_DAILY_REGISTRATIONS = 10` daily limit check.
+     Counts users created today using `User.countDocuments`.
+   - In `signup`: Added `profilePic` field handling and returned `profilePic` in user payload.
+   - In `login`: Returned `profilePic: user.profilePic || ""` in user payload.
+   - Added `updateProfile` controller to update user's `profilePic` in MongoDB.
+   - In `logout`: Passed full cookie options (`httpOnly`, `secure`, `sameSite`, `path`)
+     to `res.clearCookie` to ensure proper deletion across all browsers.
+
+8. server/routes/user.route.js
+   - Added `router.put("/profile", secureRoute, updateProfile);` endpoint.
+
+9. server/index.js
+   - Increased body parser limits to 10MB:
+     `app.use(express.json({ limit: "10mb" }));`
+     `app.use(express.urlencoded({ extended: true, limit: "10mb" }));`
+     to allow Base64 image uploads.
+   - Updated CORS origin to support dynamic localhost origins (`http://localhost:5173`,
+     `http://localhost:5174`, `http://127.0.0.1:5173`) and `process.env.FRONTEND_URL`.
+   - Added `OPTIONS`, `PUT`, `DELETE` to allowed methods to prevent preflight blocking.
+   - Preserved `credentials: true`.
+
+10. server/SocketIo/server.js
+    - Updated Socket.IO CORS configuration to allow multiple local origins
+      matching the Express server.
+
+--------------------------------------------------------------------------------
+PART 2: CLIENT / FRONTEND CHANGES
+--------------------------------------------------------------------------------
+
+11. client/src/pages/Signup.jsx
+    - Added optional profile image file picker with instant circular preview.
+    - Used FileReader to convert image to Data URL and send with signup form.
+    - Added camera overlay icon and "Upload Photo (Optional)" button.
+
+12. client/src/components/Navbar.jsx
+    - Added user avatar button to the navbar.
+    - Added interactive Profile Modal to view user information and choose a new
+      profile photo.
+    - Integrated `PUT /api/user/profile` to update user photo with instant UI sync.
+
+13. client/src/components/User.jsx
+    - Rendered `user.profilePic || userImg` with `onError` fallback to default avatar.
+
+14. client/src/components/Right.jsx
+    - Rendered `selectedConversation?.profilePic || userImg` in chat header with `onError` fallback.
+
+15. client/src/components/Chat.jsx
+    - Rendered sender's avatar dynamically:
+      * Displays `myAvatar` for messages sent by the logged-in user.
+      * Displays `otherAvatar` (`selectedConversation.profilePic`) for received messages.
+      * Falls back to `userImg` (`/assets/my_profile.webp`) with `onError` protection.
+
+16. client/src/stateManage/useConversation.js
+    - Updated `setMessages` in Zustand to support functional updates:
+      `typeof messages === "function" ? messages(state.messages) : messages`.
+
+17. client/src/context/useGetMessage.js
+    - Added `{ withCredentials: true }` and `Authorization: Bearer ${token}` header.
+    - Reset `messages` to `[]` if no conversation is selected.
+    - Ensured `loading` is properly set to `false` in a `finally` block.
+
+18. client/src/context/useSendMessage.js
+    - Added `{ withCredentials: true }` and `Authorization: Bearer ${token}` header.
+    - Added `toast.error` popup on send failure (e.g., daily limit reached).
+    - Returns `true`/`false` so input field is only cleared on success.
+    - Switched to functional state update `setMessages((prev) => [...prev, newMsg])`.
+
+19. client/src/components/InputMessage.jsx
+    - Preserves typed message text if send fails (e.g. daily limit hit).
+
+20. client/src/context/useGetSocketMessage.js
+    - Added guard `if (!socket) return;` to prevent null socket crash.
+    - Used optional chaining `selectedConversation?._id`.
+    - Wrapped `notification.play()` in `.catch()` to suppress autoplay policy errors.
+    - Used functional update `setMessages((prev) => [...prev, newMessage])`.
+
+21. client/src/context/useGetAllUsers.jsx
+    - Corrected `withCredentials: true` and added `Authorization` header.
+
+22. client/src/context/AuthProvider.jsx
+    - Wrapped user state initialization in safe JSON parser.
+
+23. client/src/context/SocketContext.jsx
+    - Safely resolved `userId` from `authUser?.user?._id || authUser?._id`.
+
+24. client/src/components/Chats.jsx
+    - Removed arbitrary 1000ms delay timer; messages display immediately.
+
+25. client/src/components/Left.jsx
+    - Added a clear "Loading users..." state while users are being fetched.
+
+================================================================================
+END OF REPORT
+================================================================================

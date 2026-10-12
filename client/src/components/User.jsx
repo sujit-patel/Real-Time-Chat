@@ -20,8 +20,15 @@ function User({ user }) {
         onClick={handleClick}
       >
         <div className={`avatar ${itsMe ? "online" : "offline"}`}>
-          <div className="ring-primary ring-offset-base-100 w-14 rounded-full ring ring-offset-2">
-            <img src={userImg} />
+          <div className="ring-primary ring-offset-base-100 w-14 h-14 rounded-full ring ring-offset-2 overflow-hidden">
+            <img
+              src={user.profilePic || userImg}
+              alt={user.fullname}
+              className="w-full h-full object-cover"
+              onError={(e) => {
+                e.target.src = userImg;
+              }}
+            />
           </div>
         </div>
         <div>

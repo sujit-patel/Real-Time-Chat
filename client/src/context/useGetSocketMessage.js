@@ -5,21 +5,32 @@ import sound from "/assets/level-up.mp3";
 
 const useGetSocketMessage = () => {
     const { socket } = useSocketContext();
-    const { messages, setMessages, selectedConversation } = useConversation();
+    const { setMessages, selectedConversation } = useConversation();
 
     useEffect(() => {
-        socket.on("newMessage", (newMessage) => {
-            if (newMessage.senderId === selectedConversation._id) {
-                const notification = new Audio(sound);
-                notification.play();
-                setMessages([...messages, newMessage]);
+        if (!socket) return;
+
+        const handleNewMessage = (newMessage) => {
+            if (
+                selectedConversation &&
+                String(newMessage?.senderId) === String(selectedConversation?._id)
+            ) {
+                try {
+                    const notification = new Audio(sound);
+                    notification.play().catch(() => {});
+                } catch (e) {
+                    console.log("Audio play error", e);
+                }
+                setMessages((prev) => [...prev, newMessage]);
             }
-        });
+        };
+
+        socket.on("newMessage", handleNewMessage);
 
         return () => {
-            socket.off("newMessage");
+            socket.off("newMessage", handleNewMessage);
         };
-    }, [socket, messages, setMessages, selectedConversation]);
+    }, [socket, selectedConversation, setMessages]);
 };
 
 export default useGetSocketMessage;

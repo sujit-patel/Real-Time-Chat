@@ -14,16 +14,15 @@ const userSchema = mongoose.Schema({
     password: {
         type: String,
         required: true
+    },
+    profilePic: {
+        type: String,
+        default: ""
     }
-    // confirmpassword: {
-    //     type: String,
-    //     required: true
-    // },
 },
 {
-    timestamps:true
-},
-);
+    timestamps: true
+});
 
 const User = mongoose.model("User", userSchema);
 

@@ -13,10 +13,12 @@ function Left() {
       </div>
       <hr />
       <div className="space-y-2 overflow-y-auto scrollbar-hide flex-1">
-        {allUsers.length > 0 ? (
+        {loading ? (
+          <p className="text-gray-400 text-center py-4">Loading users...</p>
+        ) : allUsers && allUsers.length > 0 ? (
           allUsers.map((user) => <User key={user._id} user={user} />)
         ) : (
-          <p className="text-white">Users Not Found</p>
+          <p className="text-white text-center py-4">Users Not Found</p>
         )}
       </div>
     </div>

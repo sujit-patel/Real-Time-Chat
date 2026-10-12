@@ -8,15 +8,22 @@ import { useSocketContext } from "../context/SocketContext.jsx";
 function Right() {
   const { selectedConversation } = useConversation();
   const { onlineUsers } = useSocketContext();
-  const itsOnline = onlineUsers.includes(selectedConversation._id);
+  const itsOnline = selectedConversation?._id ? onlineUsers.includes(selectedConversation._id) : false;
 
   return (
     <div className="h-screen w-full flex gap-2 py-2 flex-col">
       {/* User Profile Header */}
       <div className="flex items-center gap-5 bg-gray-800 border border-gray-600 hover:bg-gray-700 p-3 rounded-lg cursor-pointer shadow-md">
         <div className={`avatar ${itsOnline ? "online" : "offline"}`}>
-          <div className="ring-primary ring-offset-base-100 w-14 rounded-full ring ring-offset-2">
-            <img src={userImg} alt="User Avatar" />
+          <div className="ring-primary ring-offset-base-100 w-14 h-14 rounded-full ring ring-offset-2 overflow-hidden">
+            <img
+              src={selectedConversation?.profilePic || userImg}
+              alt={selectedConversation?.fullname || "User Avatar"}
+              className="w-full h-full object-cover"
+              onError={(e) => {
+                e.target.src = userImg;
+              }}
+            />
           </div>
         </div>
         <div>

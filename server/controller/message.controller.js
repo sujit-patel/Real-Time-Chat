@@ -1,6 +1,9 @@
-import { getReceiverSocketId, io } from "../SocketIo/server.js"
-import Conversation from "../models/conversation.model.js"
+import { getReceiverSocketId, io } from "../SocketIo/server.js";
+import Conversation from "../models/conversation.model.js";
 import Message from "../models/message.model.js";
+
+// DAILY LIMIT SETTINGS (Set to null or remove later if not needed)
+const MAX_DAILY_MESSAGES_PER_USER = 10;
 
 export const sendMessage = async (req, res) => {
     try {
@@ -8,14 +11,35 @@ export const sendMessage = async (req, res) => {
         const { id: receiverId } = req.params;
         const senderId = req.user._id; // Logged-in user
 
+        // Daily message limit check for logged-in user (Max 10 messages across all chats per day)
+        if (MAX_DAILY_MESSAGES_PER_USER) {
+            const startOfDay = new Date();
+            startOfDay.setHours(0, 0, 0, 0);
+
+            const endOfDay = new Date();
+            endOfDay.setHours(23, 59, 59, 999);
+
+            const todayMessagesCount = await Message.countDocuments({
+                senderId,
+                createdAt: { $gte: startOfDay, $lte: endOfDay },
+            });
+
+            if (todayMessagesCount >= MAX_DAILY_MESSAGES_PER_USER) {
+                return res.status(400).json({
+                    message: `Daily message limit reached (Max ${MAX_DAILY_MESSAGES_PER_USER} messages per day).`,
+                });
+            }
+        }
+
         // Find or create conversation
         let conversation = await Conversation.findOne({
-            members: { $all: [senderId, receiverId] }
+            members: { $all: [senderId, receiverId] },
         });
 
         if (!conversation) {
             conversation = await Conversation.create({
                 members: [senderId, receiverId],
+                messages: [],
             });
         }
 
@@ -37,21 +61,19 @@ export const sendMessage = async (req, res) => {
             io.to(receiversocketId).emit("newMessage", newMessage);
         }
 
-        res.status(201).json({ newMessage });
-
+        return res.status(201).json(newMessage);
     } catch (error) {
         console.error("Error in Sending Message:", error);
-        res.status(500).json({ message: "Internal Server Error" });
+        return res.status(500).json({ message: "Internal Server Error" });
     }
 };
-
 
 export const getMessage = async (req, res) => {
     try {
         const { id: chatUser } = req.params;
         const senderId = req.user._id; // Logged-in user
 
-        let conversation = await Conversation.findOne({
+        const conversation = await Conversation.findOne({
             members: { $all: [senderId, chatUser] },
         }).populate("messages");
 
@@ -59,7 +81,7 @@ export const getMessage = async (req, res) => {
             return res.status(200).json([]);
         }
 
-        const messages = conversation.messages;
+        const messages = conversation.messages || [];
         return res.status(200).json(messages);
     } catch (error) {
         console.error("Message fetching error:", error);

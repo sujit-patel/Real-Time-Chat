@@ -1,13 +1,17 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar.jsx";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useAuth } from "../context/AuthProvider.jsx";
+import defaultAvatar from "/assets/my_profile.webp";
+import { FaCamera } from "react-icons/fa6";
 
 function Signup() {
   const [authUser, setAuthUser] = useAuth();
+  const [profilePic, setProfilePic] = useState("");
+  const fileInputRef = useRef(null);
   const navigate = useNavigate();
   const {
     register,
@@ -17,24 +21,48 @@ function Signup() {
   } = useForm();
   const password = watch("password");
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      toast.error("Please upload an image file (PNG, JPG, JPEG, WEBP)");
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error("Image size should be less than 5MB");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setProfilePic(reader.result);
+    };
+    reader.readAsDataURL(file);
+  };
+
   const onSubmit = async (data) => {
     const userInfo = {
       fullname: data.fullname,
       email: data.email,
       password: data.password,
       confirmpassword: data.confirmpassword,
+      profilePic: profilePic || "",
     };
     await axios
-      .post(`${import.meta.env.VITE_BACKEND_URL}/api/user/signup`, userInfo)
+      .post(`${import.meta.env.VITE_BACKEND_URL}/api/user/signup`, userInfo, {
+        withCredentials: true,
+      })
       .then((response) => {
         if (response.data) {
           toast.success("Signup successful");
         }
         localStorage.setItem("messanger", JSON.stringify(response.data));
         setAuthUser(response.data);
-        setTimeout(()=>{
+        setTimeout(() => {
           navigate("/");
-        },2000);
+        }, 1500);
       })
       .catch((error) => {
         if (error.response) {
@@ -44,15 +72,51 @@ function Signup() {
   };
 
   return (
-    <div className="flex items-center gap-5 justify-center h-screen">
+    <div className="flex items-center gap-5 justify-center min-h-screen py-10">
       <div>
         <Navbar></Navbar>
       </div>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="border w-1/3 border-slate-600 rounded-md py-3 px-7 space-y-5"
+        className="border w-96 border-slate-600 rounded-md py-4 px-7 space-y-4"
       >
-        <h1 className="text-4xl font-bold text-center">Signup</h1>
+        <h1 className="text-3xl font-bold text-center">Signup</h1>
+
+        {/* Profile Image Upload Option */}
+        <div className="flex flex-col items-center justify-center gap-2">
+          <div
+            className="relative cursor-pointer group"
+            onClick={() => fileInputRef.current?.click()}
+            title="Click to choose profile picture (optional)"
+          >
+            <div className="avatar">
+              <div className="w-20 h-20 rounded-full ring-2 ring-orange-300 ring-offset-2 ring-offset-base-100 overflow-hidden">
+                <img
+                  src={profilePic || defaultAvatar}
+                  alt="Profile Preview"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            </div>
+            <div className="absolute inset-0 bg-black/40 rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white">
+              <FaCamera className="text-xl" />
+            </div>
+          </div>
+          <input
+            type="file"
+            accept="image/*"
+            ref={fileInputRef}
+            onChange={handleImageChange}
+            className="hidden"
+          />
+          <button
+            type="button"
+            onClick={() => fileInputRef.current?.click()}
+            className="text-xs text-orange-300 hover:underline"
+          >
+            {profilePic ? "Change Photo" : "Upload Photo (Optional)"}
+          </button>
+        </div>
 
         <label className="input input-bordered flex items-center gap-2">
           <input
