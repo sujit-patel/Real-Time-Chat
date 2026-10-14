@@ -35,6 +35,15 @@ SUMMARY OF KEY FEATURES & FIXES:
      * User can send e.g. 5 messages to User A and 5 to User B (total 10).
      * Any further attempt displays a toast notification and preserves user input.
 
+4. CORS & Deployment Fixes (Render + Vercel):
+   - Added explicit production origin `https://real-time-chat-ashen.vercel.app`
+     and wildcard support for any `*.vercel.app` preview deployment in `server/index.js`
+     and `server/SocketIo/server.js`.
+   - Handled preflight requests explicitly with `app.options("*", cors(...))`.
+   - Added root health check route `GET /` to verify server status.
+   - Created `client/vercel.json` with SPA rewrite rules to eliminate 404 errors
+     on route refresh/navigation (e.g. `/signup`).
+
 ================================================================================
 HOW TO REMOVE OR MODIFY THE DAILY LIMITS LATER
 ================================================================================
