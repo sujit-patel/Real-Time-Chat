@@ -16,20 +16,16 @@ function Home() {
     <div className="flex h-screen w-screen overflow-hidden bg-slate-900 text-white">
       {authUser ? (
         <div className="flex h-full w-full overflow-hidden">
-          {/* Navbar: On mobile, visible when on chat list; on desktop, always visible */}
-          <div
-            className={`${
-              selectedConversation ? "hidden md:flex" : "flex"
-            } flex-shrink-0`}
-          >
+          {/* Navbar: Visible only on desktop */}
+          <div className="hidden md:flex flex-shrink-0">
             <Navbar />
           </div>
 
-          {/* Left Sidebar (Chats List): On mobile, visible only when no chat is active; on desktop, always visible */}
+          {/* Left Sidebar (Chats List): On mobile, visible when no chat is active; on desktop, always visible */}
           <div
             className={`${
               selectedConversation ? "hidden md:flex" : "flex"
-            } flex-1 md:flex-initial md:w-80 lg:w-96 h-full flex-shrink-0 p-2 md:p-3 overflow-hidden`}
+            } flex-1 md:flex-initial md:w-80 lg:w-96 h-full flex-shrink-0 p-0 md:p-3 overflow-hidden`}
           >
             <Left />
           </div>
@@ -38,7 +34,7 @@ function Home() {
           <div
             className={`${
               selectedConversation ? "flex" : "hidden md:flex"
-            } flex-1 h-full p-2 md:p-3 overflow-hidden`}
+            } flex-1 h-full p-0 md:p-3 overflow-hidden`}
           >
             {selectedConversation ? <Right /> : <Welcome />}
           </div>

@@ -15,15 +15,16 @@ function User({ user }) {
 
   return (
     <div
-      className={`flex items-center gap-3 sm:gap-4 p-2 sm:p-2.5 rounded-xl cursor-pointer transition-all duration-200 border ${
+      className={`flex items-center gap-3 sm:gap-3.5 p-2.5 sm:p-3 rounded-2xl cursor-pointer transition-all duration-150 border ${
         isSelected
-          ? "bg-slate-700/80 border-orange-400/50 shadow-md"
-          : "bg-slate-800/40 border-slate-700/60 hover:bg-slate-700/50"
+          ? "bg-slate-800 border-orange-400/60 shadow-lg"
+          : "bg-slate-900/60 md:bg-slate-800/40 border-slate-800/70 hover:bg-slate-800/70 active:scale-[0.99]"
       }`}
       onClick={handleClick}
     >
-      <div className={`avatar ${isOnline ? "online" : "offline"} flex-shrink-0`}>
-        <div className="ring-orange-400/50 ring-offset-base-100 w-11 h-11 sm:w-12 sm:h-12 rounded-full ring-2 ring-offset-1 overflow-hidden">
+      {/* Avatar with dynamic online ring */}
+      <div className="relative flex-shrink-0">
+        <div className="w-12 h-12 rounded-full overflow-hidden ring-2 ring-slate-700/80 shadow-md">
           <img
             src={user.profilePic || userImg}
             alt={user.fullname}
@@ -33,12 +34,30 @@ function User({ user }) {
             }}
           />
         </div>
+        {isOnline && (
+          <span className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-green-500 border-2 border-slate-900 rounded-full shadow-sm" />
+        )}
       </div>
+
+      {/* User Info */}
       <div className="min-w-0 flex-1">
-        <h2 className="text-sm sm:text-base font-semibold truncate text-white">
-          {user.fullname}
-        </h2>
-        <p className="text-xs text-gray-400 truncate">{user.email}</p>
+        <div className="flex items-center justify-between gap-1">
+          <h2 className="text-sm sm:text-base font-semibold truncate text-white">
+            {user.fullname}
+          </h2>
+          {isOnline && (
+            <span className="text-[10px] text-green-400 font-medium hidden sm:inline-block">
+              Active
+            </span>
+          )}
+        </div>
+        <p className="text-xs truncate text-gray-400 mt-0.5">
+          {isOnline ? (
+            <span className="text-green-400/90 font-medium">Online now</span>
+          ) : (
+            user.email
+          )}
+        </p>
       </div>
     </div>
   );

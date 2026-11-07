@@ -23,9 +23,18 @@ function Chats() {
   return (
     <div
       className={`chat-container h-full ${
-        loading ? "p-2" : "p-2 sm:p-4"
-      } scrollbar-hide overflow-y-auto space-y-1`}
+        loading ? "p-3" : "px-3 py-4 sm:px-5"
+      } scrollbar-hide overflow-y-auto space-y-2`}
     >
+      {/* Security / Privacy Pill (Signature Chat App Touch) */}
+      {!loading && messages?.length > 0 && (
+        <div className="flex justify-center mb-3">
+          <span className="text-[10px] sm:text-xs bg-slate-800/90 border border-slate-700/60 text-gray-400 px-3 py-1 rounded-full shadow-sm flex items-center gap-1.5 backdrop-blur-sm">
+            <span>🔒</span> End-to-end encrypted conversation
+          </span>
+        </div>
+      )}
+
       {loading ? (
         <div className="h-full flex items-center justify-center">
           <Loading />
@@ -37,13 +46,18 @@ function Chats() {
           </div>
         ))
       ) : (
-        <div className="h-full flex flex-col items-center justify-center p-4 text-center">
-          <p className="text-lg sm:text-2xl font-bold text-gray-400">
-            Say! Hi 👋 to start the conversation
-          </p>
-          <p className="text-xs sm:text-sm text-gray-500 mt-1">
-            Send a message to begin chatting
-          </p>
+        <div className="h-full flex flex-col items-center justify-center p-6 text-center space-y-3">
+          <div className="w-16 h-16 rounded-3xl bg-gradient-to-tr from-orange-500/20 to-amber-400/20 border border-orange-400/30 flex items-center justify-center text-3xl shadow-lg animate-bounce">
+            👋
+          </div>
+          <div className="space-y-1">
+            <p className="text-lg sm:text-xl font-bold text-white">
+              Say Hi to start chatting!
+            </p>
+            <p className="text-xs sm:text-sm text-gray-400 max-w-xs">
+              Send a greeting message to start your conversation with {selectedConversation?.fullname}
+            </p>
+          </div>
         </div>
       )}
     </div>
