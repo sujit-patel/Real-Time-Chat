@@ -112,21 +112,27 @@ function Navbar() {
 
   return (
     <>
-      <div className="flex flex-col items-center justify-between py-4 px-2 h-screen border-r border-slate-700">
-        <div className="flex flex-col items-center gap-6">
-          <Link to="/" className="scale-125 hover:text-slate-200" title="Home">
-            <IoHomeSharp className="text-2xl" />
-          </Link>
+      <div className="flex flex-col items-center justify-between py-4 px-1.5 sm:px-2 h-full w-14 sm:w-16 border-r border-slate-700/80 bg-slate-900/95 flex-shrink-0">
+        <div className="flex flex-col items-center gap-5 sm:gap-6">
           <Link
-            to="/signup"
-            className="scale-125 hover:text-slate-200"
-            title="Signup"
+            to="/"
+            className="p-2 rounded-xl text-slate-300 hover:text-orange-300 hover:bg-slate-800 transition-all active:scale-95"
+            title="Home"
           >
-            <FaUserPlus className="text-2xl" />
+            <IoHomeSharp className="text-xl sm:text-2xl" />
           </Link>
+          {!authUser && (
+            <Link
+              to="/signup"
+              className="p-2 rounded-xl text-slate-300 hover:text-orange-300 hover:bg-slate-800 transition-all active:scale-95"
+              title="Signup"
+            >
+              <FaUserPlus className="text-xl sm:text-2xl" />
+            </Link>
+          )}
         </div>
 
-        <div className="flex flex-col items-center gap-5">
+        <div className="flex flex-col items-center gap-4 sm:gap-5">
           {authUser ? (
             <>
               {/* Profile Avatar Button */}
@@ -136,9 +142,9 @@ function Navbar() {
                   setShowModal(true);
                 }}
                 title="View / Edit Profile"
-                className="avatar cursor-pointer"
+                className="avatar cursor-pointer active:scale-95 transition-transform"
               >
-                <div className="w-10 h-10 rounded-full ring-2 ring-orange-300 ring-offset-2 ring-offset-base-100 overflow-hidden hover:scale-105 transition-transform">
+                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full ring-2 ring-orange-400 ring-offset-2 ring-offset-slate-900 overflow-hidden shadow-md">
                   <img
                     src={currentPic}
                     alt="My Profile"
@@ -151,20 +157,20 @@ function Navbar() {
               </button>
 
               <button
-                className="scale-125 hover:text-red-400 text-slate-300 transition-colors"
+                className="p-2 rounded-xl text-slate-400 hover:text-red-400 hover:bg-slate-800 transition-all active:scale-95"
                 title="Logout"
                 onClick={handleLogout}
               >
-                <RiLogoutCircleFill className="text-2xl" />
+                <RiLogoutCircleFill className="text-xl sm:text-2xl" />
               </button>
             </>
           ) : (
             <Link
               to="/login"
-              className="scale-125 hover:text-slate-200"
+              className="p-2 rounded-xl text-slate-300 hover:text-orange-300 hover:bg-slate-800 transition-all active:scale-95"
               title="Login"
             >
-              <RiLoginCircleFill className="text-2xl" />
+              <RiLoginCircleFill className="text-xl sm:text-2xl" />
             </Link>
           )}
         </div>
@@ -172,19 +178,19 @@ function Navbar() {
 
       {/* Profile Modal */}
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-          <div className="bg-gray-800 border border-gray-600 rounded-lg p-6 w-full max-w-sm shadow-xl space-y-4 relative animate-scaleIn">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-3 sm:p-4">
+          <div className="bg-slate-800 border border-slate-700 rounded-2xl p-5 sm:p-6 w-full max-w-sm max-h-[92vh] overflow-y-auto shadow-2xl space-y-4 relative">
             <button
               onClick={() => {
                 setShowModal(false);
                 setPreviewImage("");
               }}
-              className="absolute top-3 right-3 text-gray-400 hover:text-white text-xl"
+              className="absolute top-3.5 right-3.5 p-1 rounded-lg text-gray-400 hover:text-white hover:bg-slate-700 text-xl transition-colors"
             >
               <IoClose />
             </button>
 
-            <h2 className="text-2xl font-bold text-center text-white">
+            <h2 className="text-xl sm:text-2xl font-bold text-center text-white">
               User Profile
             </h2>
 
@@ -196,7 +202,7 @@ function Navbar() {
                 title="Click to change photo"
               >
                 <div className="avatar">
-                  <div className="w-24 h-24 rounded-full ring-4 ring-orange-300 ring-offset-2 ring-offset-base-100 overflow-hidden">
+                  <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full ring-4 ring-orange-400 ring-offset-2 ring-offset-slate-900 overflow-hidden shadow-lg">
                     <img
                       src={previewImage || currentPic}
                       alt="Avatar"
@@ -223,33 +229,33 @@ function Navbar() {
               <button
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
-                className="text-xs text-orange-300 hover:underline"
+                className="text-xs text-orange-300 hover:underline font-medium"
               >
                 Choose New Photo
               </button>
             </div>
 
             {/* User Info Details */}
-            <div className="bg-gray-700/60 p-3 rounded-md space-y-1 text-sm">
-              <p className="text-gray-300">
+            <div className="bg-slate-900/70 border border-slate-700/60 p-3 sm:p-3.5 rounded-xl space-y-1.5 text-xs sm:text-sm">
+              <p className="text-gray-300 truncate">
                 <span className="font-semibold text-white">Name: </span>
                 {currentUser?.fullname || "User"}
               </p>
-              <p className="text-gray-300">
+              <p className="text-gray-300 truncate">
                 <span className="font-semibold text-white">Email: </span>
                 {currentUser?.email || "Email not available"}
               </p>
             </div>
 
             {/* Actions */}
-            <div className="flex justify-end gap-3 pt-2">
+            <div className="flex justify-end gap-2 sm:gap-3 pt-2">
               <button
                 type="button"
                 onClick={() => {
                   setShowModal(false);
                   setPreviewImage("");
                 }}
-                className="btn btn-sm btn-ghost"
+                className="btn btn-sm btn-ghost text-gray-300"
               >
                 Cancel
               </button>
@@ -257,7 +263,7 @@ function Navbar() {
                 type="button"
                 disabled={isUpdating || !previewImage || previewImage === currentUser?.profilePic}
                 onClick={handleSaveProfilePic}
-                className="btn btn-sm bg-orange-300 hover:bg-orange-200 text-black font-semibold border-none"
+                className="btn btn-sm bg-orange-400 hover:bg-orange-300 text-black font-semibold border-none disabled:bg-slate-700 disabled:text-gray-500"
               >
                 {isUpdating ? "Saving..." : "Save Photo"}
               </button>

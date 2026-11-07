@@ -2,12 +2,18 @@ import React from "react";
 
 function Loading() {
   return (
-    <div className="bg-gradient-to-r from-slate-600 to-slate-700 h-full rounded-md flex items-center justify-center p-5 animate-pulse">
-      <div className="flex w-60 flex-col gap-6">
-        <div className="skeleton h-36 w-full rounded-lg animate-bounce"></div>
-        <div className="skeleton h-5 w-32 rounded-md animate-pulse"></div>
-        <div className="skeleton h-5 w-full rounded-md animate-fade"></div>
-        <div className="skeleton h-5 w-full rounded-md animate-fade"></div>
+    <div className="w-full h-full flex flex-col justify-center p-4 space-y-4 max-w-md mx-auto">
+      <div className="chat chat-start flex items-end">
+        <div className="skeleton w-8 h-8 rounded-full shrink-0"></div>
+        <div className="skeleton h-9 w-44 rounded-2xl ml-2 bg-slate-700/60"></div>
+      </div>
+      <div className="chat chat-end flex items-end justify-end">
+        <div className="skeleton h-11 w-52 rounded-2xl mr-2 bg-slate-700/60"></div>
+        <div className="skeleton w-8 h-8 rounded-full shrink-0"></div>
+      </div>
+      <div className="chat chat-start flex items-end">
+        <div className="skeleton w-8 h-8 rounded-full shrink-0"></div>
+        <div className="skeleton h-8 w-32 rounded-2xl ml-2 bg-slate-700/60"></div>
       </div>
     </div>
   );

@@ -23,11 +23,13 @@ function Chats() {
   return (
     <div
       className={`chat-container h-full ${
-        loading ? "p-1" : "p-4"
-      } scrollbar-hide overflow-y-auto`}
+        loading ? "p-2" : "p-2 sm:p-4"
+      } scrollbar-hide overflow-y-auto space-y-1`}
     >
       {loading ? (
-        <Loading />
+        <div className="h-full flex items-center justify-center">
+          <Loading />
+        </div>
       ) : messages && messages.length > 0 ? (
         messages.map((message) => (
           <div key={message._id || Math.random()} ref={lastMsgRef}>
@@ -35,9 +37,12 @@ function Chats() {
           </div>
         ))
       ) : (
-        <div className="h-full flex items-center justify-center">
-          <p className="text-3xl text-center font-bold text-gray-500">
+        <div className="h-full flex flex-col items-center justify-center p-4 text-center">
+          <p className="text-lg sm:text-2xl font-bold text-gray-400">
             Say! Hi 👋 to start the conversation
+          </p>
+          <p className="text-xs sm:text-sm text-gray-500 mt-1">
+            Send a message to begin chatting
           </p>
         </div>
       )}

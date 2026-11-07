@@ -29,10 +29,10 @@ function Chat({ message }) {
     : "";
 
   return (
-    <div>
+    <div className="py-0.5">
       <div className={`chat ${chatName}`}>
         <div className="chat-image avatar">
-          <div className="w-10 h-10 rounded-full overflow-hidden">
+          <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full overflow-hidden ring-1 ring-slate-600">
             <img
               alt="User Avatar"
               src={avatarToDisplay || userImg}
@@ -43,10 +43,14 @@ function Chat({ message }) {
             />
           </div>
         </div>
-        <div className="chat-header">
-          <time className="text-xs opacity-50">{formattedTime}</time>
+        <div className="chat-header pb-0.5">
+          <time className="text-[10px] sm:text-xs opacity-60">{formattedTime}</time>
         </div>
-        <div className={`chat-bubble ${chatColor}`}>{message?.message}</div>
+        <div
+          className={`chat-bubble ${chatColor} text-sm sm:text-base break-words break-all max-w-[85%] sm:max-w-[75%] shadow-sm`}
+        >
+          {message?.message}
+        </div>
       </div>
     </div>
   );

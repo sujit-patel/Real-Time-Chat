@@ -8,24 +8,39 @@ export default function InputMessage() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (!message.trim()) return;
+    if (!message.trim() || loading) return;
     const success = await sendMessages(message);
     if (success) {
       setMessage("");
     }
   };
+
   return (
-    <form onSubmit={handleSubmit} className="message-input-form">
-      <div className="relative">
+    <form onSubmit={handleSubmit} className="w-full">
+      <div className="relative flex items-center">
         <input
           type="text"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          placeholder="Send Message"
-          className="input input-bordered w-full pr-10"
+          placeholder="Type a message..."
+          disabled={loading}
+          className="input input-bordered w-full pr-12 text-sm sm:text-base bg-slate-800/80 border-slate-700 rounded-xl focus:border-orange-400 focus:outline-none transition-colors"
         />
-        <button type="submit" className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1">
-          <IoSend className="hover:text-gray-200 text-gray-400 cursor-pointer" />
+        <button
+          type="submit"
+          disabled={!message.trim() || loading}
+          className={`absolute right-2 p-2 rounded-lg transition-all ${
+            message.trim() && !loading
+              ? "text-orange-400 hover:text-orange-300 hover:bg-slate-700/60 active:scale-95"
+              : "text-gray-500 cursor-not-allowed"
+          }`}
+          title="Send"
+        >
+          {loading ? (
+            <span className="loading loading-spinner loading-xs text-orange-400"></span>
+          ) : (
+            <IoSend className="text-lg sm:text-xl" />
+          )}
         </button>
       </div>
     </form>

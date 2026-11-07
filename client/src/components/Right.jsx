@@ -4,18 +4,30 @@ import useConversation from "../stateManage/useConversation.js";
 import Chats from "./Chats.jsx";
 import InputMessage from "./InputMessage.jsx";
 import { useSocketContext } from "../context/SocketContext.jsx";
+import { IoArrowBack } from "react-icons/io5";
 
 function Right() {
-  const { selectedConversation } = useConversation();
+  const { selectedConversation, setSelectedConversation } = useConversation();
   const { onlineUsers } = useSocketContext();
-  const itsOnline = selectedConversation?._id ? onlineUsers.includes(selectedConversation._id) : false;
+  const isOnline = selectedConversation?._id
+    ? onlineUsers.includes(selectedConversation._id)
+    : false;
 
   return (
-    <div className="h-screen w-full flex gap-2 py-2 flex-col">
+    <div className="h-full w-full flex flex-col gap-2 overflow-hidden">
       {/* User Profile Header */}
-      <div className="flex items-center gap-5 bg-gray-800 border border-gray-600 hover:bg-gray-700 p-3 rounded-lg cursor-pointer shadow-md">
-        <div className={`avatar ${itsOnline ? "online" : "offline"}`}>
-          <div className="ring-primary ring-offset-base-100 w-14 h-14 rounded-full ring ring-offset-2 overflow-hidden">
+      <div className="flex items-center gap-2 sm:gap-4 bg-slate-800/90 border border-slate-700/80 p-2.5 sm:p-3 rounded-xl shadow-md flex-shrink-0">
+        {/* Back button visible only on mobile */}
+        <button
+          onClick={() => setSelectedConversation(null)}
+          className="md:hidden p-2 text-gray-300 hover:text-white hover:bg-slate-700 rounded-full transition-colors active:scale-95"
+          title="Back to chats"
+        >
+          <IoArrowBack className="text-xl" />
+        </button>
+
+        <div className={`avatar ${isOnline ? "online" : "offline"} flex-shrink-0`}>
+          <div className="ring-orange-400/50 ring-offset-base-100 w-10 h-10 sm:w-12 sm:h-12 rounded-full ring-2 ring-offset-1 overflow-hidden">
             <img
               src={selectedConversation?.profilePic || userImg}
               alt={selectedConversation?.fullname || "User Avatar"}
@@ -26,27 +38,33 @@ function Right() {
             />
           </div>
         </div>
-        <div>
-          <h1 className="text-xl font-semibold">
+
+        <div className="min-w-0 flex-1">
+          <h2 className="text-base sm:text-lg font-bold text-white truncate">
             {selectedConversation?.fullname}
-          </h1>
+          </h2>
           <p
-            className={`text-sm ${
-              itsOnline ? "text-green-400" : "text-red-400"
+            className={`text-xs font-medium flex items-center gap-1 ${
+              isOnline ? "text-green-400" : "text-gray-400"
             }`}
           >
-            {itsOnline ? "Online" : "Offline"}
+            <span
+              className={`w-2 h-2 rounded-full ${
+                isOnline ? "bg-green-400" : "bg-gray-500"
+              }`}
+            />
+            {isOnline ? "Online" : "Offline"}
           </p>
         </div>
       </div>
 
       {/* Chat Messages */}
-      <div className="flex-1 overflow-y-auto scrollbar-hide border border-slate-600 rounded-lg shadow-inner">
+      <div className="flex-1 min-h-0 overflow-y-auto scrollbar-hide border border-slate-700/80 rounded-xl bg-slate-900/60 shadow-inner">
         <Chats />
       </div>
 
       {/* Message Input */}
-      <div className="border border-slate-600 rounded-lg">
+      <div className="flex-shrink-0">
         <InputMessage />
       </div>
     </div>

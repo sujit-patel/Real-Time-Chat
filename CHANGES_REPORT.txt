@@ -44,6 +44,20 @@ SUMMARY OF KEY FEATURES & FIXES:
    - Created `client/vercel.json` with SPA rewrite rules to eliminate 404 errors
      on route refresh/navigation (e.g. `/signup`).
 
+5. Responsive Design & UI Overhaul (Mobile, Tablet, Desktop):
+   - Adaptive Mobile Chat Layout: On mobile screens, switching between Chat List
+     and Active Chat with an intuitive Back button (`←`).
+   - Sizing & Overflow Fixes: Eliminated hardcoded `w-1/4`, `w-1/3`, `w-96`, and
+     replaced them with responsive width classes (`w-full max-w-md`, `md:w-80 lg:w-96`).
+   - Chat Bubble Word-Wrap: Added `break-words break-all max-w-[85%]` so long text,
+     URLs, and codes never blow out screen bounds.
+   - Text Truncation: Added `truncate` and `min-w-0` on user contacts list so long
+     names and emails don't break cards.
+   - Mobile Touch & Keyboards: Replaced restrictive `h-screen` in auth pages with
+     `min-h-screen` and touch-friendly padding.
+   - Realistic Chat Skeleton: Upgraded `Loading.jsx` to sleek chat bubble skeletons.
+   - Welcome & Unauthenticated Screen: Replaced raw error text with responsive hero cards.
+
 ================================================================================
 HOW TO REMOVE OR MODIFY THE DAILY LIMITS LATER
 ================================================================================
